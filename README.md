@@ -20,4 +20,8 @@ python code to do basic machine learning stuff
     <td>gradient-descent-teta1.py</td>
     <td>same as cost-function-teta1.py but now use gradient descent to solve this</td>
   </tr>
+  <tr>
+    <td>gradient-descent-teta0-teta1.py</td>
+    <td>gradient descent to solve linear regression. this is from Andrew Ng machine learning course @ coursera</td>
+  </tr>
 </table>

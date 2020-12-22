@@ -42,5 +42,5 @@ H = teta0 + teta1 * X
 plt.plot(X, Y,'x',X,H)
 plt.xlabel("Population in city in 10,000")
 plt.ylabel("Profit in 10,000$")
-plt.title('garient descent fit')
+plt.title('garient descent fit for linear regression')
 plt.show()
