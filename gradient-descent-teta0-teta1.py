@@ -32,7 +32,10 @@ while err_gds > gds_eps:
     teta1 = teta1 - alfa * dj_to_dteta1
     err_gds = max(abs(oldteta0-teta0) , abs(oldteta1-teta1))
     iterations += 1
-    print(iterations)
+    if(iterations%100 == 0):
+      print(iterations)
+
+print("teta0 : {:0.2f} , teta1 : {:0.2f}".format(teta0, teta1))
 
 H = teta0 + teta1 * X
 # plots
