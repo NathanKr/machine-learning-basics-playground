@@ -17,25 +17,26 @@ teta0 = 100 # arbitrary initial condition
 err_gds = 1 # initial condition to enter the while loop
 gds_eps = 0.001
 iterations = 0
-alfa = 0.01 # learning rate
+alfa = 0.001 # learning rate
 
 while err_gds > gds_eps:
     H = np.ones(m)*teta0 + X * teta1
     E = H - Y 
     oldteta0 = teta0
     oldteta1 = teta1
-    # order is IMPORTANT : first compute
     dj_to_dteta0 = (1/m)*np.sum(E)
     dj_to_dteta1 = (1/m)*np.dot(E, X)
     # then assign
     teta0 = teta0 - alfa * dj_to_dteta0
     teta1 = teta1 - alfa * dj_to_dteta1
-    err_gds = max(abs(oldteta0-teta0) , abs(oldteta1-teta1))
+    err_gds = max(abs(dj_to_dteta0) , abs(dj_to_dteta1))
     iterations += 1
+    j = np.dot(E,E)/(2*m)
     if(iterations%100 == 0):
-      print(iterations)
+      print(iterations,j)
 
-print("teta0 : {:0.2f} , teta1 : {:0.2f}".format(teta0, teta1))
+
+print("J : {:0.2f}, teta0 : {:0.2f} , teta1 : {:0.2f}".format(j,teta0, teta1))
 
 H = teta0 + teta1 * X
 # plots

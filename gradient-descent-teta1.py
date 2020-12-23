@@ -28,7 +28,6 @@ for teta1 in Teta1:
 # compute teta1 for min(J)
 min_j_index = np.argmin(J)
 teta1 = Teta1[min_j_index]
-print("min(J) : {:.3f} , tata1 @ min(J) : {:.3f}".format(J[min_j_index] , teta1))
 
 h_vec = X * Teta1[min_j_index] # computed linear estimation
 
@@ -37,17 +36,19 @@ teta1_gds = 100 # arbitrary initial condition
 err_gds = 1 # initial condition to enter the while loop
 gds_eps = 0.001
 iterations = 0
-alfa = 0.01 # learning rate
+alfa = 0.001 # learning rate
 
-while abs(err_gds) > gds_eps:
+while err_gds > gds_eps:
     H = X * teta1_gds
     E = H - Y 
     dj_to_dteta1 = (1/m)*np.dot(E, X)
-    err_gds = teta1_gds
+    err_gds = abs(dj_to_dteta1)
     teta1_gds = teta1_gds - alfa * dj_to_dteta1
-    err_gds = err_gds - teta1_gds
     iterations += 1
+    j = np.dot(E,E)/(2*m)
+    print(iterations,j)
 
 
+print("min(J) : {:.3f} , tata1 @ min(J) : {:.3f}".format(J[min_j_index] , teta1))
 print("gradient descent tata1  : {:.3f} , iterations : {:.3f}".format(teta1_gds,iterations))
 
