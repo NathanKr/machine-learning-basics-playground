@@ -25,7 +25,7 @@ python code to do basic machine learning stuff
     <td>gradient descent to solve linear regression. this is from Andrew Ng machine learning course @ coursera</td>
   </tr>
    <tr>
-    <td>gradient-descent-logistics-regression-success-for-grades</td>
-    <td>gradient descent to solve logistics regression. this is from Andrew Ng machine learning course @ coursera</td>
+    <td>gradient-descent-logistics-regression-success-for-grades.py</td>
+    <td>gradient descent to solve logistics regression. the dataset is from Andrew Ng machine learning course @ coursera but there are issues , check remark on the .py file</td>
   </tr>
 </table>

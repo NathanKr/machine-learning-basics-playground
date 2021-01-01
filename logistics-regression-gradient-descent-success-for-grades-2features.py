@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from utils import sigmond
+
 
 # ****************************
 #       This dataset is problematic 
@@ -51,8 +53,6 @@ iterations = 0
 alfa = 0.001 # learning rate
 max_iterations = 100000
 
-def sigmond(val):
-    return 1/(1+np.exp(-val))
 
 # todo nath using matrix might be much easier !!!!!!
 
