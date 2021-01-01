@@ -44,13 +44,6 @@ def pass_prob(x1,x2):
   teta_x = teta0 + teta1*x1/scale_factor + teta2*x2/scale_factor
   return sigmond(teta_x)
 
-print("pass_prob(5,5) : ",pass_prob(5,5))
-print("pass_prob(45,65) : ",pass_prob(45,65))
-print("pass_prob(40,85) : ",pass_prob(40,85))
-print("pass_prob(55,55) : ",pass_prob(55,55))
-print("pass_prob(65,65) : ",pass_prob(65,65))
-print("pass_prob(60,70) : ",pass_prob(60,70))
-print("pass_prob(90,45) : ",pass_prob(90,45))
 print("pass_prob(95,95) : ",pass_prob(95,95))
 
 ar_index_pass = np.where(Y == 1)
@@ -59,7 +52,7 @@ ar_index_fail = np.where(Y == 0)
 x2_0_5_line = -(teta0+teta1*X1)/teta2 # prob 0.5
 
 
-plt.title('+ : pass , o : fail , computed 0.5 logistic regression probability line')
+plt.title('+ : pass , o : fail \ncomputed optimize.minimize 0.5 logistic regression probability line')
 plt.xlabel("grade1")
 plt.ylabel("grade2")
 plt.plot(scale_factor*X1[ar_index_pass],scale_factor*X2[ar_index_pass],'+')

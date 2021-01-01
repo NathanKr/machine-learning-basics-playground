@@ -31,7 +31,7 @@ h = sigmond(teta_x)
 
 plt.scatter(X, Y)
 plt.plot(X, h)
-plt.title('data set and logistic regression')
+plt.title('data set and logistic regression using optimize.minimize')
 plt.ylabel('pass')
 plt.xlabel('hours')
 plt.grid()
