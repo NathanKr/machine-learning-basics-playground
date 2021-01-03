@@ -33,19 +33,18 @@ h_vec = X * Teta1[min_j_index] # computed linear estimation
 
 # gradient descent
 teta1_gds = 100 # arbitrary initial condition
-err_gds = 1 # initial condition to enter the while loop
-gds_eps = 0.001
 iterations = 0
+max_iterations = 10000
 alfa = 0.001 # learning rate
 
-while err_gds > gds_eps:
+while iterations < max_iterations:
     H = X * teta1_gds
     E = H - Y 
     dj_to_dteta1 = (1/m)*np.dot(E, X)
-    err_gds = abs(dj_to_dteta1)
     teta1_gds = teta1_gds - alfa * dj_to_dteta1
     iterations += 1
     j = np.dot(E,E)/(2*m)
+    iterations += 1
     print(iterations,j)
 
 
