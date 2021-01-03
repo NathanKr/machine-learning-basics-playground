@@ -45,8 +45,8 @@ def gradient_descent_linear_regresion (Teta,X,Y,alfa):
   E = H_linear_regression - Y
   dJ_to_dTeta = (1/m)*np.dot(E, X)
   Teta = Teta - alfa * dJ_to_dTeta
-  j = np.dot(E,E)/(2*m)
-  return {"Teta" :  Teta , "j" : j}
+  J = np.dot(E,E)/(2*m)
+  return {"Teta" :  Teta , "J" : J}
 
 # cost_function_logistic_regression_J
 # Teta : 

@@ -23,12 +23,12 @@ X= np.vstack((X0,X1)).T
 while iterations <  max_iterations:
   res = gradient_descent_linear_regresion(Teta,X,Y,alfa)
   Teta = res["Teta"]
-  j = res["j"]
+  J = res["J"]
   iterations += 1
   if(iterations%100 == 0):
-      print(iterations,j)
+      print(iterations,J)
 
-print("J : {:0.2f}, teta0 : {:0.2f} , teta1 : {:0.2f}".format(j,Teta[0], Teta[1]))
+print("J : {:0.2f}, teta0 : {:0.2f} , teta1 : {:0.2f}".format(J,Teta[0], Teta[1]))
 
 H = Teta[0] + Teta[1]*X1 
 
