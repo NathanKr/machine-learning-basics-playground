@@ -22,8 +22,8 @@ X= np.vstack((X0,X1)).T
 
 while iterations <  max_iterations:
   res = gradient_descent_linear_regresion(Teta,X,Y,alfa)
-  Teta = res[0]
-  j = res[1]
+  Teta = res["Teta"]
+  j = res["j"]
   iterations += 1
   if(iterations%100 == 0):
       print(iterations,j)
