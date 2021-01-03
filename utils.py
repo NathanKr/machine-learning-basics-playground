@@ -1,7 +1,21 @@
 import numpy as np
 
 
-#Teta ia vector with 
+# cost_function_logistic_regression_J
+
+# Teta : 
+#   - is features vector : teta_0,teta_1,....,teta_n . 
+#   - Teta is column vector (n+1)x1 (n+1 is the number of features)
+# X :
+#   - a matrix [X0,X1,X2,....,Xn]. 
+#   - each X0,X1,X2,....,Xn is a column vector mX1 
+#   - m is number of data set points. 
+#   - X is mxn. 
+#   - Notice that X0 is always 1
+# X*Teta :
+#   - is : teta0*X0 + teta1*X1 + ….. +teta_n*Xn 
+#   - X*Teta is a column vector mx1 
+
 def cost_function_logistic_regression_J(Teta,X,Y):
     m = Y.size
     H_linear_regression =  np.dot(X,Teta)
