@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import optimize
-from utils import sigmond
+from utils import sigmond , cost_function_logistic_regression_J
 
 
 X1=np.array([]) # grade 1
@@ -26,16 +26,8 @@ m = Y.size # should be same as the size of X1,X2
 X0= np.ones(m)
 
 
-# todo nath using matrix might be much easier !!!!!!
-
-def cost_function_J(Teta):
-    H_linear_regression =  Teta[0] * X0 + Teta[1] * X1  + Teta[2] * X2
-    H = sigmond(H_linear_regression)
-    j_vec = Y * np.log(H) + (1-Y)*np.log(1-H)
-    J = (-1/m)*np.sum(j_vec)
-    return J
-
-res = optimize.minimize(cost_function_J, x0=[0,0,0])
+X= np.vstack((X0,X1,X2)).T
+res = optimize.minimize(cost_function_logistic_regression_J, x0=[0,0,0], args=(X,Y))
 print(res)
 
 [teta0,teta1,teta2] = res.x
