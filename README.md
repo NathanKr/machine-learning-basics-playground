@@ -7,6 +7,17 @@ python code to do basic machine learning stuff
     <th>Description</th>
   </tr>
   <tr>
+    <td>utils.py</td>
+    <td>
+    <ul>
+    <li>function to compute sigmond function</li>
+    <li>generic and vector based function to compute cost function for logistic regression</li>
+    <li>generic and vector based function to compute gradient descent for linear regression</li>
+    <li>generic and vector based function to compute gradient descent for logistic regression</li>
+    </ul>
+    </td>
+  </tr>
+  <tr>
     <td>linear-regression-exact.py</td>
     <td>
     <ul>
@@ -55,4 +66,5 @@ python code to do basic machine learning stuff
     </ul>
     </td>
   </tr>
+  
 </table>
