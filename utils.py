@@ -69,5 +69,73 @@ def cost_function_logistic_regression_J(Teta,X,Y):
     J = (-1/m)*np.sum(j_vec)
     return J
 
+
+# cost_function_linear_regression_J
+# Teta : 
+#   - is features vector : teta_0,teta_1,....,teta_n . 
+#   - Teta is column vector (n+1)x1 (n+1 is the number of features)
+# X :
+#   - a matrix [X0,X1,X2,....,Xn]. 
+#   - each X0,X1,X2,....,Xn is a column vector mx1 
+#   - m is number of data set points. 
+#   - X is mx(n+1). 
+#   - Notice that X0 is always 1
+# X*Teta :
+#   - is : teta0*X0 + teta1*X1 + ….. +teta_n*Xn 
+#   - X*Teta is a column vector mx1 
+# lamda :
+#   - is a scalar which is regularization parameter used for over fitting
+#   - by default there is no regularization thus lambda is zero
+def cost_function_linear_regression_J(Teta,X,Y,lamda=0):
+    m = Y.size
+    H_linear_regression =  np.dot(X,Teta)
+    E = Y - H_linear_regression
+    J = np.dot(E,E)/(2*m)
+    if (lamda > 0):
+      # regulrization does not affect Teta[0]
+      J += lamda*np.dot(Teta[1:],Teta[1:])/(2*m)
+    
+    return J    
+
 def sigmond(val):
     return 1/(1+np.exp(-val))
+
+
+
+# compute_X_with_normalization_for_polynom
+# e.g. for order 2 X before normalization is [X0,X1,np.power(X1,2)]
+# normalization is done for all Xi (i != 0)
+#
+# X1    :
+#   - column vector mx1
+# order : 
+#   - order of the polynom 
+#   - order must be > 1
+# X     :
+#   - a matrix [X0,X1,X2,....,Xn]
+#   - each X0,X1,X2,....,Xn is a column vector mx1 
+#   - m is number of data set points. 
+#   - X is mx(n+1)
+#   - Notice that X0 is always 1
+def compute_X_with_normalization_for_polynom(X1,order):
+  if(order <= 1):
+    raise Exception("order must be > 1")
+
+  m = X1.size 
+  X0 = np.ones(m)
+  X= np.vstack((X0,normalize(X1)))
+
+  temp_pow = 2
+  while (temp_pow <= order):
+    Xi = np.power(X1,temp_pow)
+    Xi = normalize(Xi)
+    X= np.vstack((X,Xi))
+    temp_pow += 1
+
+  return X.T    
+
+# normalize a 1d array in general to -0.5 : 0.5
+def normalize(v1d):
+  v1d_range = np.amax(v1d) - np.amin(v1d)
+  v1d_mean = np.mean(v1d)
+  return (v1d-v1d_mean)/v1d_range

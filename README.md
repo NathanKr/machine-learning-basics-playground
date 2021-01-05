@@ -11,9 +11,12 @@ python code to do basic machine learning stuff
     <td>
     <ul>
     <li>function to compute sigmond function</li>
-    <li>generic and vector based function to compute cost function for logistic regression</li>
-    <li>generic and vector based function to compute gradient descent for linear regression</li>
-    <li>generic and vector based function to compute gradient descent for logistic regression</li>
+    <li>generic and array based function to compute cost function for logistic regression</li>
+    <li>generic and array based function to compute cost function for linear regression</li>
+    <li>generic and array based function to compute gradient descent for linear regression</li>
+    <li>generic and array based function to compute gradient descent for logistic regression</li>
+    <li>generic and array based function to compute high order polynomial</li>
+    <li>generic and array based function to compute mean normalization</li>
     </ul>
     </td>
   </tr>
@@ -66,5 +69,15 @@ python code to do basic machine learning stuff
     </ul>
     </td>
   </tr>
-  
+<tr>
+    <td>regularized_linear_regression.py</td>
+    <td>
+    <ul>
+    <li>use optimize.minimize to solve linear regression. the dataset is from Andrew Ng machine learning course @ coursera</li>
+    <li>use 8 order polynomial</li>
+    <li>feature scaling is a must</li>
+    </ul>
+    </td>
+  </tr>
+
 </table>
