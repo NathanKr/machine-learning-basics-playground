@@ -118,7 +118,7 @@ def sigmond(val):
 #   - X is mx(n+1)
 #   - Notice that X0 is always 1
 def compute_X_with_normalization_for_polynom(X1,order):
-  if(order <= 1):
+  if(order < 1):
     raise Exception("order must be > 1")
 
   m = X1.size 
