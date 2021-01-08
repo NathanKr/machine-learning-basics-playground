@@ -139,3 +139,9 @@ def normalize(v1d):
   v1d_range = np.amax(v1d) - np.amin(v1d)
   v1d_mean = np.mean(v1d)
   return (v1d-v1d_mean)/v1d_range
+
+# do the oppsite of normalize
+# def d_normalize(v1d_normalized):
+#   v1d_range = np.amax(v1d) - np.amin(v1d)
+#   v1d_mean = np.mean(v1d)
+#   return (v1d-v1d_mean)/v1d_range
