@@ -138,6 +138,6 @@ def compute_X_with_normalization_for_polynom(X1,order):
 def normalize(v1d):
   v1d_range = np.amax(v1d) - np.amin(v1d)
   v1d_mean = np.mean(v1d)
-  return (v1d-v1d_mean)/v1d_range
+  return (v1d-v1d_mean)/v1d_range if v1d_range > 0 else v1d
 
 

@@ -30,8 +30,7 @@ class LearningCurves:
 
 
     def plot_dataset_engine(self,title_text):
-        plt.plot(self.X1,self.y,'x',self.X1cv,self.ycv,'o')
-        #plt.title('data set X,Y as x ,  Xcv,ycv as o')
+        plt.plot(self.X1,self.y,'x',self.X1cv,self.ycv,'.')
         plt.title(title_text)
         plt.xlabel('Change in water level (x)')
         plt.grid()
@@ -72,7 +71,7 @@ class LearningCurves:
             i += 1
 
         # plot the learning curve
-        plt.plot(i_lc,j_train_lc,'o',i_lc,j_cv_lc,'x')
+        plt.plot(i_lc,j_train_lc,'.',i_lc,j_cv_lc,'x')
         plt.title('Learning curve : ploynomial order {} - {}, Jtrain : o , Jcv : x'.format(order,error_type))
         plt.xlabel('number of training samples')
         plt.ylabel('Error')
