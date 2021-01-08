@@ -29,13 +29,17 @@ class LearningCurves:
         self.m = self.X1.size
 
 
-    # plots 
-    def plot_dataset(self):
+    def plot_dataset_engine(self,title_text):
         plt.plot(self.X1,self.y,'x',self.X1cv,self.ycv,'o')
-        plt.title('data set X,Y as x ,  Xcv,ycv as o')
+        #plt.title('data set X,Y as x ,  Xcv,ycv as o')
+        plt.title(title_text)
         plt.xlabel('Change in water level (x)')
         plt.grid()
         plt.ylabel('Water flowing out of the dam (y)')
+
+    # plots 
+    def plot_dataset(self,title_text):
+        self.plot_dataset_engine(title_text)
         plt.show()
 
 
@@ -75,13 +79,24 @@ class LearningCurves:
         plt.grid()
         plt.show()
 
+    def poly_fit(self,order):
+        X = compute_X_with_normalization_for_polynom(self.X1,order)
+        # ------ use linear regression
+        res = optimize.minimize(cost_function_linear_regression_J, x0=np.zeros(order+1) , args=(X,self.y))
+        Teta = res.x 
+        H_linear_regression = np.dot(X,Teta)
+        plt.plot(self.X1,H_linear_regression,'+')
+        self.plot_dataset_engine('data set X,Y as x ,  Xcv,ycv as o, ploynom order {} as +'.format(order))
+        plt.show()
 
 # main
 obj = LearningCurves()
 obj.load_dataset()
-obj.plot_dataset()
-obj.learning_curves(8,"high variance") # 8 order polynomial
+obj.plot_dataset('data set X,Y as x ,  Xcv,ycv as o')
+obj.poly_fit(1)
+obj.poly_fit(8)
 obj.learning_curves(1,"high bias") # 1 order polynomial
+obj.learning_curves(8,"high variance") # 8 order polynomial
 
 
 
