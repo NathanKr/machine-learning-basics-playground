@@ -84,8 +84,8 @@ class LearningCurves:
         res = optimize.minimize(cost_function_linear_regression_J, x0=np.zeros(order+1) , args=(X,self.y))
         Teta = res.x 
         H_linear_regression = np.dot(X,Teta)
-        plt.plot(self.X1,H_linear_regression,'+')
-        self.plot_dataset_engine('data set X,Y as x ,  Xcv,ycv as o, ploynom order {} as +'.format(order))
+        plt.plot(self.X1,H_linear_regression,'+r')
+        self.plot_dataset_engine('data set X,Y as x ,  Xcv,ycv as o, ploynom order {} as + red'.format(order))
         plt.show()
 
 # main
