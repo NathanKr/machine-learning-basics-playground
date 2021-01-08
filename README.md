@@ -69,13 +69,25 @@ python code to do basic machine learning stuff
     </ul>
     </td>
   </tr>
-<tr>
+  <tr>
     <td>regularized_linear_regression.py</td>
     <td>
     <ul>
     <li>use optimize.minimize to solve linear regression. the dataset is from Andrew Ng machine learning course @ coursera</li>
     <li>use 8 order polynomial</li>
     <li>feature scaling is a must</li>
+    </ul>
+    </td>
+  </tr>
+<tr>
+    <td>learning_curves.py</td>
+    <td>
+    <ul>
+    <li>use learning curves to show high bias for 1 order ploynomial</li>
+    <li>use learning curves to show high variance for 8 order ploynomial</li>
+    <li>use 1 and 8 order polynomial</li>
+    <li>feature scaling is a must</li>
+    <li>use linear regression and solve with optimize.minimize</li>
     </ul>
     </td>
   </tr>
