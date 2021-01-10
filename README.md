@@ -70,11 +70,12 @@ python code to do basic machine learning stuff
     </td>
   </tr>
   <tr>
-    <td>regularized_linear_regression.py</td>
+    <td>regularization.py</td>
     <td>
     <ul>
     <li>use optimize.minimize to solve linear regression. the dataset is from Andrew Ng machine learning course @ coursera</li>
-    <li>use 8 order polynomial</li>
+    <li>use 8 order polynomial which overfit with lamda = 0 but is better with lamda @ minimum cross validation cost</li>
+    <li>plot Jcv for different lambda and choose the lambda with minimum cost</li>
     <li>feature scaling is a must</li>
     </ul>
     </td>
