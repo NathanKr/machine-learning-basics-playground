@@ -19,7 +19,6 @@ scale_factor = 100
 
 # using scale_factor of 1 will cause an error "Desired error not necessarily achieved due to precision loss." 
 # the problem is that X0 is 1 while X1,X2 are between 0 - 100 so 100 scale them to be around 1
-
 X1 = X1/scale_factor
 X2 = X2/scale_factor
 X= np.vstack((X0,X1,X2)).T
