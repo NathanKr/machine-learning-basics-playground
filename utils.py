@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 # gradient_descent_logistic_regresion
 # Teta : 
@@ -140,4 +141,14 @@ def normalize(v1d):
   v1d_mean = np.mean(v1d)
   return (v1d-v1d_mean)/v1d_range if v1d_range > 0 else v1d
 
+def normal_dist(sample_x,x):
+    mean_x = np.mean(x)
+    variance_x = np.var(x) 
+    return normal_dist_short(sample_x,mean_x,variance_x)
+
+
+def normal_dist_short(sample_x,mean_x,variance_x):
+    delta = sample_x - mean_x
+    p = (1/math.sqrt(2*math.pi*variance_x))*math.exp(-math.pow(delta,2)/(2*variance_x))
+    return p
 
