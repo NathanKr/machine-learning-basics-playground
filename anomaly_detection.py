@@ -14,13 +14,16 @@ mat_dict = sio.loadmat(file_name)
 # print("mat_dict.keys() : ",mat_dict.keys())
 
 X = mat_dict["X"]
-Xval = mat_dict["Xval"]
-yval = mat_dict["yval"]
+Xcv = mat_dict["Xval"]
+ycv = mat_dict["yval"]
 
 x1 = X[:,0]
 x2 = X[:,1]
+x1cv = Xcv[:,0]
+x2cv = Xcv[:,1]
 
-def plots():
+
+def plot_dataset():
     plt.plot(x1,x2,'x')
     plt.xlabel('Latency (ms)')
     plt.ylabel('Throuput (mb/s)')
@@ -55,22 +58,46 @@ def plot_probabilities():
     axs[1].set_title('p(x2)')
     plt.show()
 
-#plots()    
-#plot_histogram() # check that it is normally distributed
-#plot_probabilities()
+def plot_contours():
+    #X1, X2 = np.meshgrid(x1,x2) -> too big
+    graph_start = 10
+    graph_stop = 20
+    X1, X2 = np.meshgrid(np.linspace(graph_start,graph_stop,100) ,np.linspace(graph_start,graph_stop,100) )
+    P = np.vectorize(p_x1)(X1) * np.vectorize(p_x2)(X2)
+    fig, ax = plt.subplots()
+    CS = ax.contour(X1, X2, P)
+    ax.clabel(CS, inline=True, fontsize=12)
+    ax.set_title('p(x) = p(x1)*p(x2)')
+    ax.set_xlabel('x1')
+    ax.set_ylabel('x2')
+    plt.ylim(graph_start,graph_stop)
+    plt.xlim(graph_start,graph_stop)
+    plt.plot(x1,x2,'.')
+    plt.show() 
+
+def plot_cv():
+    ar_index_anomaly = np.where(ycv == 1)[0]
+    ar_index_normal = np.where(ycv == 0)[0]
+
+    plt.plot(x1cv[ar_index_anomaly],x2cv[ar_index_anomaly],'rx')
+    plt.plot(x1cv[ar_index_normal],x2cv[ar_index_normal],'g.')
+    plt.xlabel('Latency (ms)')
+    plt.ylabel('Throuput (mb/s)')
+    plt.title("server computers cross validation : x - anomaly , . - normal")
+    plt.show()
 
 
 
-# P_X1, P_X2 = np.meshgrid(p_x1_vec(),p_x2_vec())
-# P = P_X1*P_X2
-# print(P.shape)
-# plt.contour(P_X1, P_X2, P,colors='black')
-# plt.show()
+def plots():
+    plot_dataset()    
+    plot_histogram() # check that it is normally distributed
+    plot_probabilities()
+    plot_contours()
+    plot_cv()
 
-X1, X2 = np.meshgrid(x1,x2)
-P = np.vectorize(p_x1)(X1) * np.vectorize(p_x2)(X2)
-plt.contour(X1, X2, P)
-plt.xlabel('x1')
-plt.ylabel('x2')
-plt.title('p(x) = p(x1)*p(x2)')
-plt.show()
+# main
+# plots()
+plot_cv()
+
+
+
