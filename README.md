@@ -17,6 +17,8 @@ python code to do basic machine learning stuff
     <li>generic and array based function to compute gradient descent for logistic regression</li>
     <li>generic and array based function to compute high order polynomial</li>
     <li>generic and array based function to compute mean normalization</li>
+    <li>generic and array based function to compute normal distribution</li>
+    <li>generic and array based function to compute F1score</li>
     </ul>
     </td>
   </tr>
