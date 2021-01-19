@@ -92,5 +92,16 @@ python code to do basic machine learning stuff
     </ul>
     </td>
   </tr>
-
+<tr>
+    <td>anomaly_detection.py</td>
+    <td>
+    <ul>
+    <li>detect anomaly using two features</li>
+    <li>there is no test set here only train and cv so we can not test the results properly</li>
+    <li>there are two anomlies in the middle - high p so it is not possible to detect it and it is clear that more features are needed</li>
+    <li>it is important to get a feel of the problem by making plots</li>
+    <li>best eps is computed by looping over few value of eps and computing F1Score. Here we look for the maximal F1Score</li>
+    </ul>
+    </td>
+  </tr>
 </table>

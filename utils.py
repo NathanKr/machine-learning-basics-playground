@@ -152,3 +152,41 @@ def normal_dist_short(sample_x,mean_x,variance_x):
     p = (1/math.sqrt(2*math.pi*variance_x))*math.exp(-math.pow(delta,2)/(2*variance_x))
     return p
 
+# actual and estimated are 1
+def true_positive(actual,estimated):
+  mul = actual * estimated
+  return np.sum(mul) # sum 1
+
+# actual is 0 but estimated is 1
+def false_positive(actual,estimated): 
+  ar_index_estimated_1 = np.where(estimated == 1)[0]
+  actual_slice = actual[ar_index_estimated_1]
+  actual_slice_0 = np.where(actual_slice == 0)[0]
+  num_actual_slice_0 = len(actual_slice_0)
+  return num_actual_slice_0
+
+# actual is 1 but estimated is 0
+def false_negative(actual,estimated): 
+  ar_index_actual_1 = np.where(actual == 1)[0]
+  estimated_slice = estimated[ar_index_actual_1]
+  estimated_slice_0 = np.where(estimated_slice == 0)[0]
+  num_estimated_slice_0 = len(estimated_slice_0)
+  return num_estimated_slice_0
+  
+
+def precision(actual,estimated):
+    tp = true_positive(actual,estimated)
+    fp = false_positive(actual,estimated)
+    return tp/(tp+fp)
+
+def recall(actual,estimated):
+    tp = true_positive(actual,estimated)
+    fn = false_negative(actual,estimated)
+    return tp /(tp + fn)
+
+
+
+def F1score(actual,estimated):    
+    prec = precision(actual,estimated)
+    rec = recall(actual,estimated)
+    return 2*prec*rec/(prec+rec)
