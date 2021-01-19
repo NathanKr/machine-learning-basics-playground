@@ -110,9 +110,9 @@ def plot_results(_best_eps):
 
     # h = p(x) < eps
     p = p_x_vec(x1cv,x2cv)
-    estimated_y = np.where(p < _best_eps ,1 ,0) # 1 is anomally
-    ar_index_anomaly = np.where(estimated_y == 1)[0]
-    ar_index_normal = np.where(estimated_y == 0)[0]
+    h = np.where(p < _best_eps ,1 ,0) # 1 is anomally
+    ar_index_anomaly = np.where(h == 1)[0]
+    ar_index_normal = np.where(h == 0)[0]
     axs[1].plot(x1cv[ar_index_anomaly],x2cv[ar_index_anomaly],'rx')
     axs[1].plot(x1cv[ar_index_normal],x2cv[ar_index_normal],'g.')
     axs[1].set_title("server computers h = p(x) < best_eps : anomaly - x , normal - . ")
@@ -132,8 +132,8 @@ def compute_epsilon():
     vec_eps = []
     while i < num_eps:
         actual_y = ycv
-        estimated_y = np.where(p < eps ,1 ,0) # 1 is anomally
-        vec_F1score.append(F1score(actual_y,estimated_y))
+        h = np.where(p < eps ,1 ,0) # 1 is anomally
+        vec_F1score.append(F1score(actual_y,h))
         vec_eps.append(eps)
         eps = eps / 2
         i += 1
