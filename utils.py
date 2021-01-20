@@ -101,6 +101,22 @@ def cost_function_linear_regression_J(Teta,X,Y,lamda=0):
 def sigmond(val):
     return 1/(1+np.exp(-val))
 
+# return 0 or 1
+def sigmond_binari(val):
+    sig = 1/(1+np.exp(-val))
+    return 1 if sig >= 0.5 else 0    
+
+# return 0 or 1
+def neuron(Teta,X):
+  val = np.dot(Teta,X)
+  return sigmond_binari(val)
+
+# a, b : 0,1
+def logical_and(a,b):
+  Teta = np.array([-30 , 20 , 20 ])
+  X = np.array([1 , a , b ])
+  return neuron(Teta,X)
+
 
 
 # compute_X_with_normalization_for_polynom
