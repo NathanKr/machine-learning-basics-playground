@@ -1,5 +1,5 @@
 import numpy as np
-from utils import cost_function_logistic_regression_J  , sigmoid , sigmoid_binari
+from utils import cost_function_logistic_regression_J  ,  sigmoid_binari
 from scipy import optimize
 
 def train():
