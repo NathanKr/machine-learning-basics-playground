@@ -107,4 +107,14 @@ python code to do basic machine learning stuff
     </ul>
     </td>
   </tr>
+  <tr>
+    <td>neuron_logic_and_gate.py</td>
+    <td>
+    <ul>
+    <li>model a neuron by logistic regression</li>
+    <li>use minimize to create logic AND using a neuron</li>
+    </ul>
+    </td>
+  </tr>
+  
 </table>
