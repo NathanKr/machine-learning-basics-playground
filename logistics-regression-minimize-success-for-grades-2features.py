@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import optimize
-from utils import sigmond , cost_function_logistic_regression_J
+from utils import sigmoid , cost_function_logistic_regression_J
 
 
 X1=np.array([]) # grade 1
@@ -34,7 +34,7 @@ print(res)
 
 def pass_prob(x1,x2):
   teta_x = teta0 + teta1*x1/scale_factor + teta2*x2/scale_factor
-  return sigmond(teta_x)
+  return sigmoid(teta_x)
 
 print("pass_prob(95,95) : ",pass_prob(95,95))
 

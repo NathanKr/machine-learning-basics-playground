@@ -17,7 +17,7 @@ import math
 def gradient_descent_logistic_regresion (Teta,X,Y,alfa):
   m = Y.size
   H_linear_regression =  np.dot(X,Teta)
-  H = sigmond(H_linear_regression)
+  H = sigmoid(H_linear_regression)
   E = H - Y 
   dJ_to_dTeta = np.dot(E, X)
   Teta = Teta - alfa * dJ_to_dTeta
@@ -65,7 +65,7 @@ def gradient_descent_linear_regresion (Teta,X,Y,alfa):
 def cost_function_logistic_regression_J(Teta,X,Y):
     m = Y.size
     H_linear_regression =  np.dot(X,Teta)
-    H = sigmond(H_linear_regression)
+    H = sigmoid(H_linear_regression)
     j_vec = Y * np.log(H) + (1-Y)*np.log(1-H)
     J = (-1/m)*np.sum(j_vec)
     return J
@@ -98,18 +98,18 @@ def cost_function_linear_regression_J(Teta,X,Y,lamda=0):
     
     return J    
 
-def sigmond(val):
+def sigmoid(val):
     return 1/(1+np.exp(-val))
 
 # return 0 or 1
-def sigmond_binari(val):
+def sigmoid_binari(val):
     sig = 1/(1+np.exp(-val))
     return 1 if sig >= 0.5 else 0    
 
 # return 0 or 1
 def neuron(Teta,X):
   val = np.dot(Teta,X)
-  return sigmond_binari(val)
+  return sigmoid_binari(val)
 
 # a, b : 0,1
 def logical_and(a,b):

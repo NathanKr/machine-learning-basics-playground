@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import optimize
 from scipy import stats
-from utils import sigmond , cost_function_logistic_regression_J
+from utils import sigmoid , cost_function_logistic_regression_J
 
 # pass
 Y = np.array([0	,0	,0	,0	,0	,0	,1	,0	,1	,0	,1	,0	,1	,0	,1	,1	,1	,1	,1	,1])
@@ -19,7 +19,7 @@ teta0 = res.x[0]
 teta1 = res.x[1]
 
 teta_x = teta0 + teta1 *X1
-h = sigmond(teta_x)
+h = sigmoid(teta_x)
 
 
 plt.scatter(X1, Y)

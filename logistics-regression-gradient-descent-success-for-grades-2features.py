@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from utils import sigmond , gradient_descent_logistic_regresion
+from utils import sigmoid , gradient_descent_logistic_regresion
 
 X1=np.array([]) # grade 1
 X2=np.array([]) # grade 2
@@ -37,7 +37,7 @@ while iterations <  max_iterations:
 print("J : {:0.2f} , teta0 : {:0.2f} , teta1 : {:0.2f} ,  teta2 : {:0.2f}".format(J,Teta[0], Teta[1],Teta[2]))
 
 def prob(x1,x2):
-    return sigmond(Teta[0]+Teta[1]*x1/scale_factor+Teta[2]*x2/scale_factor)
+    return sigmoid(Teta[0]+Teta[1]*x1/scale_factor+Teta[2]*x2/scale_factor)
 
 print("h @ x1=90 , x2=90",prob(90,90))  
 
