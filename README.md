@@ -112,7 +112,7 @@ python code to do basic machine learning stuff
     <td>
     <ul>
     <li>model a neuron by logistic regression</li>
-    <li>use minimize to create logic AND using a neuron</li>
+    <li>use    to create logic AND using a neuron</li>
     </ul>
     </td>
   </tr>
