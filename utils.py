@@ -98,6 +98,10 @@ def cost_function_linear_regression_J(Teta,X,Y,lamda=0):
     
     return J    
 
+
+def softplus(val):
+    return np.log(1+np.exp(val))
+
 def sigmoid(val):
     return 1/(1+np.exp(-val))
 
