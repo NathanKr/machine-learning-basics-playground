@@ -8,7 +8,7 @@ from utils import softplus
 class BackSimple:
     def __init__(self):
         self.x = np.array([0 , 0.5 , 1]) # input dosage : between 0 and 1
-        self.xy = np.array([0 , 1 , 0]) # output efficacy : 0 or 1
+        self.y = np.array([0 , 1 , 0]) # output efficacy : 0 or 1
 
         self.b1 = -1.43
         self.b2 = 0.57
@@ -24,7 +24,6 @@ class BackSimple:
         self.a2 = None
         self.z3 = None
         self.z4 = None
-        self.y = None
 
     def linear_line(self,x,w,b):
         return w * x + b
@@ -64,6 +63,8 @@ class BackSimple:
         axs[2,1].set_title('z4 vs x')
         axs[3,0].plot(self.x,self.h,'o')
         axs[3,0].set_title('h vs x')
+        axs[3,1].plot(self.x,self.y,'o')
+        axs[3,1].set_title('y vs x')
         fig.suptitle('signals')
         plt.tight_layout()
         plt.show()
