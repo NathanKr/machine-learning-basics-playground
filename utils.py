@@ -102,6 +102,12 @@ def cost_function_linear_regression_J(Teta,X,Y,lamda=0):
 def softplus(val):
     return np.log(1+np.exp(val))
 
+# it turns out that the derivative to softplus is exactly sigmoid 
+# check here(https://medium.com/@abhinavr8/activation-functions-neural-networks-66220238e1ff#:~:text=Softplus%20function%3A%20f(x),also%20called%20the%20logistic%20function.)
+def dsoftplus_to_dval(val):
+    return sigmoid(val)
+    
+
 def sigmoid(val):
     return 1/(1+np.exp(-val))
 
