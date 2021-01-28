@@ -20,21 +20,24 @@ class BackSimple:
         self.x = np.array([0 , 0.5 , 1]) # input dosage : between 0 and 1
         self.y = np.array([0 , 1 , 0]) # output efficacy : 0 or 1
 
-        self.min_step_size = 0.001
-        self.learning_rate = 0.01 
-        self.b1 = 0
-        self.b2 = 0
-        self.b3 = 0
-        self.w1 = 0
-        self.w2 = 0
-        self.w3 = 0
-        self.w4 = 0
+        self.MIN_STEP_SIZE = 0.001
+        self.LEARNING_RATE = 0.01 # alfa
+        self.MAX_ITERATIONS = 100
+        self.b1 = None
+        self.b2 = None
+        self.b3 = None
+        self.w1 = None
+        self.w2 = None
+        self.w3 = None
+        self.w4 = None
         self.z1 = None
         self.z2 = None
         self.a1 = None
         self.a2 = None
         self.z3 = None
         self.z4 = None
+        self.current_max_step = None
+        self.current_num_iterations = None
 
     def linear_line(self,x,w,b):
         return w * x + b
@@ -55,10 +58,8 @@ class BackSimple:
         self.a2 = softplus(self.z2)
         self.z3 = self.linear_line(self.a1,self.w3,0)
         self.z4 = self.linear_line(self.a2,self.w4,0)
-        self.h = self.compute_h()
+        self.h  = self.z3+self.z4+self.b3
     
-    def compute_h(self):
-        return self.z3+self.z4+self.b3
 
     def dssr_to_dh(self):
         #ssr is sum over (y[i]-h[i])^2 
@@ -160,9 +161,9 @@ class BackSimple:
     def gradient_descent_b3(self):
         step_size = 1 # just a value to enter the loop
         self.b3 = 0
-        while abs(step_size) > self.min_step_size:
+        while abs(step_size) > self.MIN_STEP_SIZE:
             # ------------ this is the gradient descent engine
-            step_size = self.dssr_to_db3() * self.learning_rate
+            step_size = self.dssr_to_db3() * self.LEARNING_RATE
             self.b3 = self.b3 - step_size # i did not see a proof for this
 
 
@@ -196,6 +197,63 @@ class BackSimple:
         fig.suptitle('signals')
         plt.tight_layout()
         plt.show()
+
+def compute_step(self,derivaive):
+    step = self.LEARNING_RATE * derivaive
+    self.current_max_step = max(step,self.current_max_step)
+    return step
+def random_normal_distribution(self):
+    return np.random.normal()
+
+
+
+def compute_initial_value_for_all_the_features(self):
+    # random weight and zero bias
+    self.b1 = self.b2 = self.b3 = self.w1 = 0
+    self.w2 = self.random_normal_distribution()
+    self.w3 = self.random_normal_distribution()
+    self.w4 = self.random_normal_distribution()
+
+
+def gradient_descent_algorithm_is_finish(self):
+    step_condition = self.current_max_step < self.MIN_STEP_SIZE
+    if(step_condition == True):
+        print("step condition is True , current_max_step : {} , MIN_STEP_SIZE : {}".format(self.current_max_step,self.MIN_STEP_SIZE))
+        
+    iterations_condition = self.current_num_iterations > self.MAX_ITERATIONS
+    if(iterations_condition == True):
+        print("num iteration condition is True , current_num_iterations : {} , MAX_ITERATIONS : {}".format(self.current_num_iterations,self.MAX_ITERATIONS))
+    
+    return step_condition or iterations_condition
+
+
+def compute_new_features_value_given_step_per_feature(self):
+    # compute derivative of cost with respect to every feature using the chain rule
+    # compute step per feature given derivative 
+    # compute new features value given step per feature (order is not important)
+    self.b1 +=  - compute_step(self.dssr_to_db1())
+    self.b2 += - compute_step(self.dssr_to_db2())
+    self.b3 += - compute_step(self.dssr_to_db3())
+    self.w1 += - compute_step(self.dssr_to_dw1())
+    self.w2 += - compute_step(self.dssr_to_dw2())
+    self.w3 += - compute_step(self.dssr_to_dw3())
+    self.w4 += - compute_step(self.dssr_to_dw4())
+
+    
+def update_new_signals_using_forward_propagation(self):
+    self.forward_propagation()
+
+
+def learn_using_gradient_descent(self):
+    self.current_max_step = 0
+    self.current_num_iterations = 0
+    self.compute_initial_value_for_all_the_features()
+    self.update_new_signals_using_forward_propagation()
+    
+    while(self.gradient_descent_algorithm_is_finish() == False):
+        self.compute_new_features_value_given_step_per_feature()
+        self.update_new_signals_using_forward_propagation()
+        self.current_num_iterations += 1
 
 
 # main
