@@ -25,8 +25,8 @@ class BackSimple:
         self.y = np.array([0 , 1 , 0]) # output efficacy : 0 or 1
 
         self.MIN_STEP_SIZE = 0.001
-        self.LEARNING_RATE = 0.001 # alfa
-        self.MAX_ITERATIONS = 100
+        self.LEARNING_RATE = 0.01 # alfa
+        self.MAX_ITERATIONS = 50
         self.b1 = None
         self.b2 = None
         self.b3 = None
@@ -40,7 +40,7 @@ class BackSimple:
         self.a2 = None
         self.z3 = None
         self.z4 = None
-        self.current_max_step = None
+        self.steps = None
         self.current_num_iterations = None
 
     def linear_line(self,x,w,b):
@@ -208,7 +208,8 @@ class BackSimple:
 
     def compute_step(self,derivative):
         step = self.LEARNING_RATE * derivative
-        self.current_max_step = max(step,self.current_max_step)
+        print("step : ",step)
+        self.steps.append(step)
         return step
 
     def random_normal_distribution(self):
@@ -223,17 +224,27 @@ class BackSimple:
         self.w3 = self.random_normal_distribution()
         self.w4 = self.random_normal_distribution()
 
+    def current_max_step(self):
+        if(len(self.steps) == 0):
+             return None
+        else:
+            return max(self.steps)
 
     def gradient_descent_algorithm_is_finish(self):
-        step_condition = self.current_max_step < self.MIN_STEP_SIZE
+        
+        if(len(self.steps) == 0):
+            step_condition = False
+        else:
+            step_condition = self.current_max_step() < self.MIN_STEP_SIZE
+        
         if(step_condition == True):
-            print("step condition is True , current_max_step : {} , MIN_STEP_SIZE : {}".format(self.current_max_step,self.MIN_STEP_SIZE))
+            print("step condition is True , current_max_step : {} , MIN_STEP_SIZE : {}".format(self.current_max_step(),self.MIN_STEP_SIZE))
             print("current_num_iterations : {} , MAX_ITERATIONS : {}".format(self.current_num_iterations,self.MAX_ITERATIONS))
 
         iterations_condition = self.current_num_iterations > self.MAX_ITERATIONS
         if(iterations_condition == True):
             print("num iteration condition is True , current_num_iterations : {} , MAX_ITERATIONS : {}".format(self.current_num_iterations,self.MAX_ITERATIONS))
-            print("current_max_step : {} , MIN_STEP_SIZE : {}".format(self.current_max_step,self.MIN_STEP_SIZE))
+            print("current_max_step : {} , MIN_STEP_SIZE : {}".format(self.current_max_step(),self.MIN_STEP_SIZE))
 
         
         return step_condition or iterations_condition
@@ -243,29 +254,40 @@ class BackSimple:
         # compute derivative of cost with respect to every feature using the chain rule
         # compute step per feature given derivative 
         # compute new features value given step per feature (order is not important)
-        self.b1 +=  - self.compute_step(self.dssr_to_db1())
-        self.b2 += - self.compute_step(self.dssr_to_db2())
-        self.b3 += - self.compute_step(self.dssr_to_db3())
-        self.w1 += - self.compute_step(self.dssr_to_dw1())
-        self.w2 += - self.compute_step(self.dssr_to_dw2())
-        self.w3 += - self.compute_step(self.dssr_to_dw3())
-        self.w4 += - self.compute_step(self.dssr_to_dw4())
+        self.steps = []
 
+        b1 = self.b1 - self.compute_step(self.dssr_to_db1())
+        b2 = self.b2 - self.compute_step(self.dssr_to_db2())
+        b3 = self.b3 - self.compute_step(self.dssr_to_db3())
+        w1 = self.w1 - self.compute_step(self.dssr_to_dw1())
+        w2 = self.w2 - self.compute_step(self.dssr_to_dw2())
+        w3 = self.w3 - self.compute_step(self.dssr_to_dw3())
+        w4 = self.w4 - self.compute_step(self.dssr_to_dw4())
+
+        # now we have new features , so update them all
+        self.b1 = b1
+        self.b2 = b2
+        self.b3 = b3
+        self.w1 = w1
+        self.w2 = w2
+        self.w3 = w3
+        self.w4 = w4
         
     def update_new_signals_using_forward_propagation(self):
         self.forward_propagation()
 
 
     def learn_using_gradient_descent(self):
-        self.current_max_step = self.MIN_STEP_SIZE
+        self.steps = []
         self.current_num_iterations = 0
-        self.compute_initial_value_for_all_the_features()
+        # todo nath bring back --> self.compute_initial_value_for_all_the_features()
+        self.plug_final_values()
         self.update_new_signals_using_forward_propagation()
         
         while(self.gradient_descent_algorithm_is_finish() == False):
             self.compute_new_features_value_given_step_per_feature()
             self.update_new_signals_using_forward_propagation()
-            print("ssr : {} , iteration : {} , max_step : {}".format(self.sum_square_residuals() , self.current_num_iterations, self.current_max_step))
+            print("ssr : {} , iteration : {} , current_max_step : {}".format(self.sum_square_residuals() , self.current_num_iterations, self.current_max_step()))
             self.print_features()
             self.current_num_iterations += 1
 
