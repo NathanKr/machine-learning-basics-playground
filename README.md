@@ -123,6 +123,7 @@ python code to do basic machine learning stuff
     <li>solve the data set with the nural network as in https://www.youtube.com/watch?v=IN2XmBhILt4</li>
     <li>this is solved using gredient descent</li>
     <li>derivative of cost with respect to the features is computed using the chain rule in a nice lazy programming manner</li>
+    <li>using the chain rule evaluate the derivative from right (cost function) to left thus back propagating</li>
     <li>the derivatives are checked via the numeric derivative in debug_check_analytical_derivative()</li>
     <li>taking initial values suggested by StatsQuest and AndrewNg the algorithm is converging but not to the global minima - ssr ~0.7 so result are not good but the learning code is working</li>
     <li>taking initial values around the solution of minimize - check neural_network_learn_minimize is working even when we add eps of 4</li>
