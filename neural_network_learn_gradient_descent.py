@@ -11,6 +11,7 @@ class BackSimple:
         print("b1 : {}\nb2 : {}\nb3 : {}\nw1 : {}\nw2 : {}\nw3 : {}\nw4 : {}\n".format(self.b1 , self.b2, self.b3 , self.w1 , self.w2 , self.w3 , self.w4))
 
     def plug_final_values(self):
+        # this is StatsQuest numbers
         self.b1 = -1.43
         self.b2 = 0.57
         self.b3 = 2.61
@@ -26,7 +27,7 @@ class BackSimple:
 
         self.MIN_STEP_SIZE = 0.0001
         self.LEARNING_RATE = 0.001 # alfa
-        self.MAX_ITERATIONS = 500
+        self.MAX_ITERATIONS = 1500
         self.NUMERICAL_DERIVATIVE_EPS = 0.001
 
         self.feature_names = ["b1" , "b2" , "b3" , "w1" , "w2" , "w3" , "w4"]
@@ -224,18 +225,30 @@ class BackSimple:
         return np.random.normal()
 
     def compute_initial_value_for_all_the_features(self):
+        # the follwoing will converge to ssr zero but its not fair because i took the values from neural_network_learn_minimize.py
+        self.b1 = 0 # 0.50560784 exact
+        self.b2 = -10.69737385
+        self.b3 = -5.59668029
+        self.w1 = 0.54058468
+        self.w2 = 12.98906751
+        self.w3 = 5.72510687
+        self.w4 = -0.88626893
+        
         # random weight and zero bias
         # following is suggested by StatsQuest
-        self.b1 = self.b2 = self.b3 = 0
-        self.w1 = self.random_normal_distribution()
-        self.w2 = self.random_normal_distribution()
-        self.w3 = self.random_normal_distribution()
-        self.w4 = self.random_normal_distribution()
-        # val_max = 0.5
-        # # following is suggested by Andrew Ng
+        # self.b1 = self.b2 = self.b3 = 0
+        # self.w1 = self.random_normal_distribution()
+        # self.w2 = self.random_normal_distribution()
+        # self.w3 = self.random_normal_distribution()
+        # self.w4 = self.random_normal_distribution()
+
+
+        # val_max = 0.1
+        # following is suggested by Andrew Ng
         # self.b1 = symetric_random(val_max)
         # self.b2 = symetric_random(val_max)
         # self.b3 = symetric_random(val_max)
+        # self.b1 = self.b2 = self.b3 = 0
         # self.w1 = symetric_random(val_max)
         # self.w2 = symetric_random(val_max)
         # self.w3 = symetric_random(val_max)
@@ -256,12 +269,12 @@ class BackSimple:
         
         if(step_condition == True):
             print("step condition is True , current_max_step : {} , MIN_STEP_SIZE : {}".format(self.current_max_step(),self.MIN_STEP_SIZE))
-            print("current_num_iterations : {} , MAX_ITERATIONS : {}".format(self.current_num_iterations,self.MAX_ITERATIONS))
+            print("ssr : {} , current_num_iterations : {} , MAX_ITERATIONS : {}".format(self.sum_square_residuals(),self.current_num_iterations,self.MAX_ITERATIONS))
 
         iterations_condition = self.current_num_iterations > self.MAX_ITERATIONS
         if(iterations_condition == True):
             print("num iteration condition is True , current_num_iterations : {} , MAX_ITERATIONS : {}".format(self.current_num_iterations,self.MAX_ITERATIONS))
-            print("current_max_step : {} , MIN_STEP_SIZE : {}".format(self.current_max_step(),self.MIN_STEP_SIZE))
+            print("ssr : {} , current_max_step : {} , MIN_STEP_SIZE : {}".format(self.sum_square_residuals(),self.current_max_step(),self.MIN_STEP_SIZE))
 
         
         return step_condition or iterations_condition
@@ -346,7 +359,7 @@ class BackSimple:
             i += 1
 
 obj = BackSimple()
-obj.debug_check_analytical_derivative() # should be invoked only until it is ok
-obj.plot_dataset()
+# obj.debug_check_analytical_derivative() # should be invoked only until it is ok
+# obj.plot_dataset()
 obj.learn_using_gradient_descent()
-obj.plot_signals()
+# obj.plot_signals()
