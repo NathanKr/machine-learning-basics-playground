@@ -226,19 +226,20 @@ class BackSimple:
     def compute_initial_value_for_all_the_features(self):
         # random weight and zero bias
         # following is suggested by StatsQuest
-        # self.b1 = self.b2 = self.b3 = self.w1 = 0
-        # self.w2 = self.random_normal_distribution()
-        # self.w3 = self.random_normal_distribution()
-        # self.w4 = self.random_normal_distribution()
-        val_max = 0.5
-        # following is suggested by Andrew Ng
-        self.b1 = symetric_random(val_max)
-        self.b2 = symetric_random(val_max)
-        self.b3 = symetric_random(val_max)
-        self.w1 = symetric_random(val_max)
-        self.w2 = symetric_random(val_max)
-        self.w3 = symetric_random(val_max)
-        self.w4 = symetric_random(val_max)
+        self.b1 = self.b2 = self.b3 = 0
+        self.w1 = self.random_normal_distribution()
+        self.w2 = self.random_normal_distribution()
+        self.w3 = self.random_normal_distribution()
+        self.w4 = self.random_normal_distribution()
+        # val_max = 0.5
+        # # following is suggested by Andrew Ng
+        # self.b1 = symetric_random(val_max)
+        # self.b2 = symetric_random(val_max)
+        # self.b3 = symetric_random(val_max)
+        # self.w1 = symetric_random(val_max)
+        # self.w2 = symetric_random(val_max)
+        # self.w3 = symetric_random(val_max)
+        # self.w4 = symetric_random(val_max)
 
     def current_max_step(self):
         if(len(self.steps) == 0):
@@ -345,7 +346,7 @@ class BackSimple:
             i += 1
 
 obj = BackSimple()
-# obj.debug_check_analytical_derivative()
-# obj.plot_dataset()
+obj.debug_check_analytical_derivative() # should be invoked only until it is ok
+obj.plot_dataset()
 obj.learn_using_gradient_descent()
 obj.plot_signals()

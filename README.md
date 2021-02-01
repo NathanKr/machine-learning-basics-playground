@@ -116,5 +116,27 @@ python code to do basic machine learning stuff
     </ul>
     </td>
   </tr>
+   <tr>
+    <td>neural_network_learn_gradient_descent.py</td>
+    <td>
+    <ul>
+    <li>solve the data set with the nural network as in https://www.youtube.com/watch?v=IN2XmBhILt4</li>
+    <li>this is solved using gredient descent . derivative of cost with respect to the features is computed using the chain rule in a nice lazy programming manner</li>
+    <li>the derivatives are checked via the numeric derivative in debug_check_analytical_derivative()</li>
+    <li>the algorithm is converging but not to the global minima so result are realy bad. need here to check other initial value -- TODO !!!!!!</li>
+    </ul>
+    </td>
+  </tr>
+
+   <tr>
+    <td>neural_network_learn_minimize.py</td>
+    <td>
+    <ul>
+    <li>solve the data set with the nural network as in https://www.youtube.com/watch?v=IN2XmBhILt4</li>
+    <li>this is solved using minimize</li>
+    <li>the algorithm is converging in general to almost zero cost function</li>
+    </ul>
+    </td>
+  </tr>
   
 </table>
