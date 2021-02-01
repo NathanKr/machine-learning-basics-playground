@@ -216,3 +216,15 @@ def F1score(actual,estimated):
     prec = precision(actual,estimated)
     rec = recall(actual,estimated)
     return 2*prec*rec/(prec+rec)
+
+def symetric_random(val_max):
+  """[summary]
+  get a ranome number [-val_max , val_max]
+
+  Args:
+      val_max (number): [description]
+
+  Returns:
+      [type]: [description]
+  """
+  return np.random.rand()*2*val_max - val_max 

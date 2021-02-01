@@ -1,4 +1,4 @@
-from utils import true_positive , false_positive , precision , false_negative , recall , F1score , logical_and
+from utils import symetric_random , true_positive , false_positive , precision , false_negative , recall , F1score , logical_and
 import numpy as np
 
 actual =   np.array([ 0 , 1 , 1 , 0 , 1 , 0 , 0 , 0])
@@ -25,9 +25,24 @@ def test_logical_and():
     print(logical_and(0,1) == 0)
     print(logical_and(1,1) == 1)
 
+def test_symetric_random():
+    e = 0.5
+    i = 0
+    while i < 100:
+        r = symetric_random(e)
+        if r <= e and r >= -e:
+            i += 1
+        else:
+            print (False)
+            return
+    
+    return True
+
+
 # main
 test_F2Score()
 test_logical_and()
+test_symetric_random()
 
 
 

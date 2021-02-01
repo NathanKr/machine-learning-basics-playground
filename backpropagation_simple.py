@@ -1,11 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from utils import softplus , dsoftplus_to_dval
+from utils import softplus , dsoftplus_to_dval , symetric_random
 import sys
 
 # this is based on this https://www.youtube.com/watch?v=IN2XmBhILt4
 
-# this is only estimation
 class BackSimple:
 
     def print_features(self):
@@ -23,10 +22,18 @@ class BackSimple:
     def __init__(self):
         self.x = np.array([0 , 0.5 , 1]) # input dosage : between 0 and 1
         self.y = np.array([0 , 1 , 0]) # output efficacy : 0 or 1
+        self.m = self.y.size # number of data set points
 
-        self.MIN_STEP_SIZE = 0.001
-        self.LEARNING_RATE = 0.01 # alfa
-        self.MAX_ITERATIONS = 50
+        self.MIN_STEP_SIZE = 0.0001
+        self.LEARNING_RATE = 0.001 # alfa
+        self.MAX_ITERATIONS = 500
+        self.NUMERICAL_DERIVATIVE_EPS = 0.001
+
+        self.feature_names = ["b1" , "b2" , "b3" , "w1" , "w2" , "w3" , "w4"]
+        self.n = len(self.feature_names) # number of features
+        self.feature_derivatives = [self.dssr_to_db1 , self.dssr_to_db2 , self.dssr_to_db3 , self.dssr_to_dw1 , self.dssr_to_dw2 ,self.dssr_to_dw3 , self.dssr_to_dw4]
+
+
         self.b1 = None
         self.b2 = None
         self.b3 = None
@@ -71,7 +78,8 @@ class BackSimple:
         #ssr is sum over (y[i]-h[i])^2 
         #dssr/db3 = (dssr/dh)*(dh/db3)
         residual = self.y-self.h
-        dssr_dh = 2*np.dot(residual,residual)*(-1) # this is sum over (y[i]-h[i])^2 
+        # dssr_dh = 2*np.sum(residual)*(-1) # -> no sum because it is done allready on the cost to feature derivatives
+        dssr_dh = 2*residual*(-1)
         return dssr_dh
 
     # ************ level 2 --> 3 ************ 
@@ -101,14 +109,14 @@ class BackSimple:
         return self.a1
 
     def dz4_to_da2(self): 
-            # z4 = a2*w4+0
-            # dz4 / da2 = w4
-            return self.w4
+        # z4 = a2*w4+0
+        # dz4 / da2 = w4
+        return self.w4
 
     def dz4_to_dw4(self):
-            # z4 is a2*w4+0
-            # dz4 / dw4 = w4
-            return self.a2        
+        # z4 is a2*w4+0
+        # dz4 / dw4 = w4
+        return self.a2        
 
 
     # ************ level 1 --> 2 ************
@@ -215,20 +223,28 @@ class BackSimple:
     def random_normal_distribution(self):
         return np.random.normal()
 
-
-
     def compute_initial_value_for_all_the_features(self):
         # random weight and zero bias
-        self.b1 = self.b2 = self.b3 = self.w1 = 0
-        self.w2 = self.random_normal_distribution()
-        self.w3 = self.random_normal_distribution()
-        self.w4 = self.random_normal_distribution()
+        # following is suggested by StatsQuest
+        # self.b1 = self.b2 = self.b3 = self.w1 = 0
+        # self.w2 = self.random_normal_distribution()
+        # self.w3 = self.random_normal_distribution()
+        # self.w4 = self.random_normal_distribution()
+        val_max = 0.5
+        # following is suggested by Andrew Ng
+        self.b1 = symetric_random(val_max)
+        self.b2 = symetric_random(val_max)
+        self.b3 = symetric_random(val_max)
+        self.w1 = symetric_random(val_max)
+        self.w2 = symetric_random(val_max)
+        self.w3 = symetric_random(val_max)
+        self.w4 = symetric_random(val_max)
 
     def current_max_step(self):
         if(len(self.steps) == 0):
              return None
         else:
-            return max(self.steps)
+            return max(np.abs(self.steps))
 
     def gradient_descent_algorithm_is_finish(self):
         
@@ -279,21 +295,57 @@ class BackSimple:
 
     def learn_using_gradient_descent(self):
         self.steps = []
+        ssr_vec = []
         self.current_num_iterations = 0
-        # todo nath bring back --> self.compute_initial_value_for_all_the_features()
-        self.plug_final_values()
+        self.compute_initial_value_for_all_the_features()
+        # self.plug_final_values()
         self.update_new_signals_using_forward_propagation()
         
         while(self.gradient_descent_algorithm_is_finish() == False):
             self.compute_new_features_value_given_step_per_feature()
             self.update_new_signals_using_forward_propagation()
-            print("ssr : {} , iteration : {} , current_max_step : {}".format(self.sum_square_residuals() , self.current_num_iterations, self.current_max_step()))
+            ssr = self.sum_square_residuals()
+            print("ssr : {} , iteration : {} , current_max_step : {}".format(ssr , self.current_num_iterations, self.current_max_step()))
+            ssr_vec.append(ssr)
             self.print_features()
             self.current_num_iterations += 1
 
+        plt.plot(ssr_vec)
+        plt.title('cost - sum square residual vs iterations')
+        plt.grid()
+        plt.show()
 
+    def compute_numerical_derivative(self,func_value_plus_eps,func_value_minus_eps):
+        return (func_value_plus_eps - func_value_minus_eps) / (2*self.NUMERICAL_DERIVATIVE_EPS)
+
+
+    def debug_check_analytical_derivative(self):
+        """ use this to verify derivative are ok
+            compare analytical derivative computed with the chain rule to numerical derivatives
+            no need to invoke this after it is ok
+            complete match -> score is 100
+        """
+        self.compute_initial_value_for_all_the_features()
+        self.update_new_signals_using_forward_propagation()
+
+        i = 0
+        while i < self.n: # loop all n features 
+            analytic_derivative = self.feature_derivatives[i]
+            feature_name = self.feature_names[i]
+            self.__dict__[feature_name] += self.NUMERICAL_DERIVATIVE_EPS
+            self.update_new_signals_using_forward_propagation()
+            func_value_plus_eps = self.sum_square_residuals()
+
+            self.__dict__[feature_name] -= 2*self.NUMERICAL_DERIVATIVE_EPS
+            self.update_new_signals_using_forward_propagation()
+            func_value_minus_eps = self.sum_square_residuals()
+
+            numerical_derivative = self.compute_numerical_derivative(func_value_plus_eps,func_value_minus_eps)
+            print("feature : {} , score : {}  , 100 marks excact analytic derivative as numeric".format(feature_name,100*abs(analytic_derivative()/numerical_derivative)))
+            i += 1
 
 obj = BackSimple()
-# plot_dataset()
-# obj.plot_signals()
+# obj.debug_check_analytical_derivative()
+# obj.plot_dataset()
 obj.learn_using_gradient_descent()
+obj.plot_signals()
