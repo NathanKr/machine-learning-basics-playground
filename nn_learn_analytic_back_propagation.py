@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from utils import softplus , dsoftplus_to_dval , symetric_random
+from utils import softplus , dsoftplus_to_dval , symetric_random , random_normal_distribution , linear_line
 import sys
 
 # this is based on this https://www.youtube.com/watch?v=IN2XmBhILt4
@@ -51,8 +51,8 @@ class BackSimple:
         self.steps = None
         self.current_num_iterations = None
 
-    def linear_line(self,x,w,b):
-        return w * x + b
+    def linear_line_with_self(self,x,w,b):
+        return linear_line(x,w,b)
 
 
     def plot_dataset(self):
@@ -65,13 +65,13 @@ class BackSimple:
 
     def forward_propagation(self):
         # layer 1 -> layer 2
-        self.z1 = self.linear_line(self.x,self.w1,self.b1)
-        self.z2 = self.linear_line(self.x,self.w2,self.b2)
+        self.z1 = self.linear_line_with_self(self.x,self.w1,self.b1)
+        self.z2 = self.linear_line_with_self(self.x,self.w2,self.b2)
         self.a1 = softplus(self.z1)
         self.a2 = softplus(self.z2)
         # layer 2 -> layer 3
-        self.z3 = self.linear_line(self.a1,self.w3,0)
-        self.z4 = self.linear_line(self.a2,self.w4,0)
+        self.z3 = self.linear_line_with_self(self.a1,self.w3,0)
+        self.z4 = self.linear_line_with_self(self.a2,self.w4,0)
         self.h  = self.z3+self.z4+self.b3
     
 
@@ -221,15 +221,13 @@ class BackSimple:
         self.steps.append(step)
         return step
 
-    def random_normal_distribution(self):
-        return np.random.normal()
 
     def init_values_StatsQuest(self):
         self.b1 = self.b2 = self.b3 = 0
-        self.w1 = self.random_normal_distribution()
-        self.w2 = self.random_normal_distribution()
-        self.w3 = self.random_normal_distribution()
-        self.w4 = self.random_normal_distribution()
+        self.w1 = random_normal_distribution()
+        self.w2 = random_normal_distribution()
+        self.w3 = random_normal_distribution()
+        self.w4 = random_normal_distribution()
 
     def init_values_AndrewNg(self):
         val_max = 0.1 # pick some small value

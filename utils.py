@@ -228,3 +228,11 @@ def symetric_random(val_max):
       [type]: [description]
   """
   return np.random.rand()*2*val_max - val_max 
+
+
+
+def random_normal_distribution():
+    return np.random.normal()  
+
+def linear_line(x,w,b):
+    return w * x + b    

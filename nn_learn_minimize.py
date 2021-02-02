@@ -1,5 +1,5 @@
 import numpy as np
-from utils import softplus 
+from utils import softplus , random_normal_distribution , linear_line
 from scipy import optimize
 import numpy as np
 
@@ -8,8 +8,6 @@ import numpy as np
 x = np.array([0 , 0.5 , 1]) # input dosage : between 0 and 1
 y = np.array([0 , 1 , 0]) # output efficacy : 0 or 1
 
-def linear_line(x,w,b):
-    return w * x + b
 
 # b1 : Teta[0]
 # b2 : Teta[1]
@@ -41,8 +39,7 @@ def sum_square_residuals(Teta):
     ssr = np.dot(residual,residual) 
     return ssr
 
-def random_normal_distribution():
-    return np.random.normal()
+
 
 #res = optimize.minimize(sum_square_residuals, x0=[0,0,0,1,2,3,4]) --> this is not going to find the global minima
 # the following will give almost zero ssr for most runs but not all
