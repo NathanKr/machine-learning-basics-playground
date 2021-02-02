@@ -120,8 +120,8 @@ python code to do basic machine learning stuff
     <td>nn_learn_analytic_back_propagation.py</td>
     <td>
     <ul>
-    <li>solve the data set with the nural network as in https://www.youtube.com/watch?v=IN2XmBhILt4</li>
-    <li>this is solved using gredient descent</li>
+    <li>solve the data set with the neural network as  <a href="https://www.youtube.com/watch?v=IN2XmBhILt4">here</a></li>
+    <li>neural network is solved using gredient descent</li>
     <li>derivative of cost with respect to the features is computed using the chain rule ad gradient descent in a nice lazy programming manner</li>
     <li>using the chain rule evaluate the derivative from right (cost function) to left thus back propagating</li>
     <li>the derivatives are checked via the numeric derivative in debug_check_analytical_derivative()</li>
@@ -135,10 +135,21 @@ python code to do basic machine learning stuff
     <td>nn_learn_minimize.py</td>
     <td>
     <ul>
-    <li>solve the data set with the nural network as in https://www.youtube.com/watch?v=IN2XmBhILt4</li>
+    <li>solve the data set with the neural network as  <a href="https://www.youtube.com/watch?v=IN2XmBhILt4">here</a></li>
     <li>this is solved using minimize thus no derivative are used here</li>
     <li>the algorithm is converging in general to almost zero cost function</li>
     </ul>
     </td>
   </tr>
+   <tr>
+    <td>nn_learn_back_propagation.py</td>
+    <td>
+    <ul>
+<li> i am solving the same neural network as in nn_learn_minimize.py and nn_learn_analytic_back_propagation</li>
+<li> solution is based on the coursera course by Andreu Ng in particular lecture 9 which starts here <a href="https://www.youtube.com/watch?v=0twSSFZN9Mc">here</a></li>
+    </ul>
+    </td>
+  </tr>
+
+  
 </table>
