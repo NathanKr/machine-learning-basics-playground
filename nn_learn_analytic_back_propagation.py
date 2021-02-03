@@ -1,11 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from utils import softplus , dsoftplus_to_dval , symetric_random , random_normal_distribution , linear_line
+from utils import compute_numerical_derivative , softplus , dsoftplus_to_dval , symetric_random , random_normal_distribution , linear_line
 import sys
 
 # this is based on this https://www.youtube.com/watch?v=IN2XmBhILt4
 
-class BackSimple:
+class AnalyticBackPropagation:
 
     def print_features(self):
         print("b1 : {}\nb2 : {}\nb3 : {}\nw1 : {}\nw2 : {}\nw3 : {}\nw4 : {}\n".format(self.b1 , self.b2, self.b3 , self.w1 , self.w2 , self.w3 , self.w4))
@@ -336,8 +336,8 @@ class BackSimple:
         plt.grid()
         plt.show()
 
-    def compute_numerical_derivative(self,func_value_plus_eps,func_value_minus_eps):
-        return (func_value_plus_eps - func_value_minus_eps) / (2*self.NUMERICAL_DERIVATIVE_EPS)
+    def compute_numerical_derivative_self(self,func_value_plus_eps,func_value_minus_eps):
+        return  compute_numerical_derivative(func_value_plus_eps,func_value_minus_eps,self.NUMERICAL_DERIVATIVE_EPS)
 
 
     def debug_check_analytical_derivative(self):
@@ -361,11 +361,11 @@ class BackSimple:
             self.update_new_signals_using_forward_propagation()
             func_value_minus_eps = self.sum_square_residuals()
 
-            numerical_derivative = self.compute_numerical_derivative(func_value_plus_eps,func_value_minus_eps)
+            numerical_derivative = self.compute_numerical_derivative_self(func_value_plus_eps,func_value_minus_eps)
             print("feature : {} , score : {}  , 100 marks excact analytic derivative as numeric".format(feature_name,100*abs(analytic_derivative()/numerical_derivative)))
             i += 1
 
-obj = BackSimple()
+obj = AnalyticBackPropagation()
 obj.debug_check_analytical_derivative() # should be invoked only until it is ok
 obj.plot_dataset()
 obj.learn_using_gradient_descent()

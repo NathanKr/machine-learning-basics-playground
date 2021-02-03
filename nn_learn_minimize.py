@@ -3,7 +3,6 @@ from utils import softplus , random_normal_distribution , linear_line
 from scipy import optimize
 import numpy as np
 
-# same data set as in neural_network_learn_gradient_descent.py
 
 x = np.array([0 , 0.5 , 1]) # input dosage : between 0 and 1
 y = np.array([0 , 1 , 0]) # output efficacy : 0 or 1

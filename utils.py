@@ -111,6 +111,10 @@ def dsoftplus_to_dval(val):
 def sigmoid(val):
     return 1/(1+np.exp(-val))
 
+def dsigmoid_to_dval(val):   
+    sig = sigmoid(val)
+    return sig * (1 - sig)        
+
 # return 0 or 1
 def sigmoid_binari(val):
     sig = 1/(1+np.exp(-val))
@@ -127,6 +131,10 @@ def logical_and(a,b):
   X = np.array([1 , a , b ])
   return neuron(Teta,X)
 
+NUMERICAL_DERIVATIVE_EPS = 0.001
+
+def compute_numerical_derivative(func_value_plus_eps,func_value_minus_eps,eps = NUMERICAL_DERIVATIVE_EPS):
+  return (func_value_plus_eps - func_value_minus_eps) / (2*eps)
 
 
 # compute_X_with_normalization_for_polynom

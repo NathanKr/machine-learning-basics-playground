@@ -128,6 +128,8 @@ python code to do basic machine learning stuff
     <li>taking initial values suggested by StatsQuest and AndrewNg the algorithm is converging but not to the global minima - ssr ~0.7 so result are not good but the learning code is working</li>
     <li>taking initial values around the solution of minimize - check neural_network_learn_minimize is working even when we add eps of 4</li>
     <li>TODO : understand how to get initial values that will cause covergence to the global minima ssr ~ 0</li>
+    <li>cost function used here is ssr</li>
+    <li>activation function used here is softplus</li>
     </ul>
     </td>
   </tr>
@@ -138,6 +140,8 @@ python code to do basic machine learning stuff
     <li>solve the data set with the neural network as  <a href="https://www.youtube.com/watch?v=IN2XmBhILt4">here</a></li>
     <li>this is solved using minimize thus no derivative are used here</li>
     <li>the algorithm is converging in general to almost zero cost function</li>
+    <li>cost function used here is ssr</li>
+    <li>activation function used here is softplus</li>
     </ul>
     </td>
   </tr>
@@ -145,8 +149,11 @@ python code to do basic machine learning stuff
     <td>nn_learn_back_propagation.py</td>
     <td>
     <ul>
-<li> i am solving the same neural network as in nn_learn_minimize.py and nn_learn_analytic_back_propagation</li>
-<li> solution is based on the coursera course by Andreu Ng in particular lecture 9 which starts here <a href="https://www.youtube.com/watch?v=0twSSFZN9Mc">here</a></li>
+    <li> i am solving almost the same neural network as in nn_learn_minimize.py and nn_learn_analytic_back_propagation</li>
+    <li> solution is based on the coursera course by Andreu Ng in particular lecture 9 which starts here<a href="https://www.youtube.com/watch?v=0twSSFZN9Mc">here</a></li>
+    <li>cost function used here (as opposed to the two other solutions) is the same as in logistic regression and i am ignoring regularization</li>
+    <li>activation function used here (as opposed to the two other solutions) is sigmoid</li>
+    <li>features and signals have Andrew Ng notations (as opposed to the two other solutions) </li>
     </ul>
     </td>
   </tr>
