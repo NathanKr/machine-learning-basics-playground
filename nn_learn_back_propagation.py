@@ -24,6 +24,7 @@ class BackPropagation:
         # level 1 -> level 2
         self.Teta1_sample = None # 2 x 2
         self.dcost_to_dteta1_sample = np.empty((2,2)) # 2 x 2
+        self.dcost_to_dteta1 = np.empty((2,2)) # 2 x 2
         
         # level 2
         self.z2_sample = None # 2 x 1
@@ -33,6 +34,7 @@ class BackPropagation:
         # level 2 -> level 3
         self.Teta2_sample = None # 3 x 1
         self.dcost_to_dteta2_sample = None # 3 x 1
+        self.dcost_to_dteta2 = None # 3 x 1
 
         # level 3
         self.a3_sample = None # scalar
@@ -177,6 +179,7 @@ class BackPropagation:
 
     def compute_cost_derivative_and_check(self):
         i_sample = 0
+        obj.dcost_to_dteta1 = ...........
         while i_sample < obj.m: # loop over data set samples
             # use rand because i want simply to check derivative
             Teta1_sample = np.random.rand(2,2)
