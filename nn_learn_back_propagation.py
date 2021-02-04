@@ -23,7 +23,7 @@ class BackPropagation:
 
         # level 1 -> level 2
         self.Teta1_sample = None # 2 x 2
-        self.dcost_to_dteta1_sample = None # 2 x 2
+        self.dcost_to_dteta1_sample = np.empty((2,2)) # 2 x 2
         
         # level 2
         self.z2_sample = None # 2 x 1
@@ -31,8 +31,8 @@ class BackPropagation:
         self.delta2_sample = None # 2 x 1
 
         # level 2 -> level 3
-        self.Teta2_sample = None # 1 x 3
-        self.dcost_to_dteta2_sample = None # 1 x 3
+        self.Teta2_sample = None # 3 x 1
+        self.dcost_to_dteta2_sample = None # 3 x 1
 
         # level 3
         self.a3_sample = None # scalar
@@ -76,27 +76,48 @@ class BackPropagation:
         # operator * is used here for element by element multiplication
         # dg_to_dz2 = 
         # for sigmoid : dcost_to_dval(self.z2) is equal to self.a2 * (1 - self.a2)
+        # following is correct for sigmoid thus the bias is not included
+        # dg_to_dz2_sample = self.a2_sample[1:] * (1 - self.a2_sample[1:])
         dg_to_dz2_sample = self.a2_sample * (1 - self.a2_sample)
+
         self.delta2_sample = np.matmul(self.Teta2_sample.T , self.delta3_sample) * dg_to_dz2_sample
+        # i see no reason to take the bias in delta which is a measure of error , for bias it has no meaning
+        self.delta2_sample = self.delta2_sample[1:]
 
         # layer 3 -> self.delta1 has no meaning for layer 1 because we only have input
 
     def compute_dcost_to_dteta1_sample(self):
         # this is correct only for the cost function of logisitc regression --> verify this
-        self.dcost_to_dteta1_sample = np.matmul(self.a1_sample , self.delta2_sample)
+        # todo nath use this self.dcost_to_dteta1_sample = np.matmul(self.delta2_sample , self.a1_sample.T)
+        i=0
+        while i < 2:
+            j=0
+            while j < 2:
+                self.dcost_to_dteta1_sample[i,j] = self.a1_sample[i] * self.delta2_sample[j]  
+                j += 1
+            i += 1
+        
+
 
     def compute_dcost_to_dteta2_sample(self):
         # this is correct only for the cost function of logisitc regression --> verify this
-        self.dcost_to_dteta2_sample = np.matmul(self.a2_sample , self.delta3_sample)
+        # self.dcost_to_dteta2_sample = np.matmul( self.delta3_sample , self.a2_sample.T)
+        self.dcost_to_dteta2_sample =  self.delta3_sample * self.a2_sample
 
     def compute_dcost_to_dteta_sample(self):
         self.forward_propagation_sample()
         self.backward_propagation_sample()
-        self.compute_dcost_to_dteta1_sample()
         self.compute_dcost_to_dteta2_sample()
+        self.compute_dcost_to_dteta1_sample()
 
-    def compute_cost_sample(self):
-        return cost_function_logistic_regression_J(self.get_Teta_sample(),self.x_sample,self.y_sample)
+
+
+    def compute_cost_sample(self,Teta,X,Y):
+        # Teta = self.get_Teta_sample()
+        # Y = self.y_sample
+        # ## todo nath , replace with symetric_random 
+        # X = np.random.rand(self.n) 
+        return cost_function_logistic_regression_J(Teta,X,Y)
 
     def compute_cost_numerical_derivative_sample_per_feature(self,i_feature):
         """[summary]
@@ -107,14 +128,32 @@ class BackPropagation:
         Returns:
             [type]: [description]
         """
+
+        Y = self.y_sample
+        # ## todo nath , replace with symetric_random 
+        X = np.random.rand(self.n) 
+
+        # save teta state
+        saved_Teta1_sample = self.Teta1_sample.copy()
+        saved_Teta2_sample = self.Teta2_sample.copy()
+
         eps = self.NUMERICAL_DERIVATIVE_EPS
-        Teta_sample_feature = np.copy(self.get_Teta_sample())
+        Teta_features_sample = np.copy(self.get_Teta_sample())
 
-        Teta_sample_feature[i_feature] += eps
-        cost_plus_feature_eps = self.compute_cost_sample()
+        # add eps
+        Teta_features_sample[i_feature] += eps
+        self.forward_propagation_sample()
+        cost_plus_feature_eps = self.compute_cost_sample(Teta_features_sample,X,Y)
 
-        Teta_sample_feature[i_feature] -= 2*eps
-        cost_minus_feature_eps = self.compute_cost_sample()
+        # subtract eps
+        Teta_features_sample[i_feature] -= 2*eps
+        self.forward_propagation_sample()
+        cost_minus_feature_eps = self.compute_cost_sample(Teta_features_sample,X,Y)
+
+        # restore teta state
+        self.Teta1_sample = saved_Teta1_sample
+        self.Teta2_sample = saved_Teta2_sample
+        self.forward_propagation_sample()
 
         return  compute_numerical_derivative(cost_plus_feature_eps,cost_minus_feature_eps,eps)
 
@@ -124,8 +163,10 @@ class BackPropagation:
         Returns:
             ([number]): 7 x 1 which is 4 from Teta1_sample and 3 from Teta2_sample
         """
-        teta_1__sample_flat = self.Teta1_sample.reshape(-1)
-        return np.concatenate(teta_1__sample_flat , self.Teta2_sample)
+        teta1_sample_flat = self.Teta1_sample.reshape(-1)
+        teta2_sample_flat = self.Teta2_sample.reshape(-1)
+
+        return np.concatenate((teta1_sample_flat , teta2_sample_flat))
 
     def compute_numeric_dcost_to_dteta_sample(self):
         i_feature = 0
@@ -148,7 +189,7 @@ class BackPropagation:
 
     def compare_derivatives_sample(self):
         dcost_to_dteta1_sample_flat = self.dcost_to_dteta1_sample.reshape(-1)
-        dcost_to_dteta_sample_flat =  np.concatenate(dcost_to_dteta1_sample_flat , self.dcost_to_dteta2_sample)
+        dcost_to_dteta_sample_flat =  np.concatenate((dcost_to_dteta1_sample_flat , self.dcost_to_dteta2_sample))
 
         result_percent = 100 * self.numeric_dcost_to_dteta_sample / dcost_to_dteta_sample_flat
         print(f"delta rule vs numeric dcost / dteta  (100 is perfect match): {result_percent}")

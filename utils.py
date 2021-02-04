@@ -227,7 +227,7 @@ def F1score(actual,estimated):
 
 def symetric_random(val_max):
   """[summary]
-  get a ranome number [-val_max , val_max]
+  get a random number [-val_max , val_max]
 
   Args:
       val_max (number): [description]
