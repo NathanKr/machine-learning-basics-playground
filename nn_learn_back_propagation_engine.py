@@ -80,6 +80,22 @@ class Network:
         """
         return (output_activations-y)
 
+    def update_mini_batch(self, mini_batch, alfa):
+        """Update the network's weights and biases by applying
+        gradient descent using backpropagation to a single mini batch.
+        The "mini_batch" is a list of tuples "(x, y)", and "alfa"
+        is the learning rate."""
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
+        for x, y in mini_batch:
+            delta_nabla_b, delta_nabla_w = self.backprop(x, y)
+            nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
+            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
+        self.weights = [w-(alfa/len(mini_batch))*nw 
+                        for w, nw in zip(self.weights, nabla_w)]
+        self.biases = [b-(alfa/len(mini_batch))*nb 
+                       for b, nb in zip(self.biases, nabla_b)]
+
     def feedforward(self, x): 
         """[summary]
 
@@ -96,38 +112,3 @@ class Network:
         
         h = a
         return h # hypothesis ,output
-
-
-
-# def print_list(l,var_name):
-#     i=0
-#     while i < len(l):
-#         print(f"{var_name}[{i}].shape : {l[i].shape}")
-#         i += 1
-#     print(f"{var_name}\n{l}")
-
-
-# def learn_logical_and():
-#     obj = Network([2, 1],sigmoid , dsigmoid_to_dval)
-#     # these are correct values
-#     obj.biases[0][0][0] = -30
-#     obj.weights[0][0][0] = 20
-#     obj.weights[0][0][1] = 20
-
-#     print_list(obj.biases,"biases")
-#     print_list(obj.weights,"weights")
-
-#     x1 = np.array([1 , 0 , 0 , 1])
-#     x2 = np.array([1 , 0 , 1 , 0])
-#     y =  np.array([1 , 0 , 0 , 0]) # logic and gate
-#     x= np.vstack((x1,x2)).T
-#     i_sample = 3
-#     x_sample = x[i_sample].reshape((x[i_sample].size,1))
-#     y_sample = y[i_sample]
-#     print(f"feedforward\n{obj.feedforward(x_sample)}")
-#     (nabla_b , nabla_w) = obj.backprop(x_sample,y_sample)
-#     print(f"nabla_b\n{nabla_b}")
-#     print(f"nabla_w\n{nabla_w}")
-
-# # main
-# learn_logical_and()    
