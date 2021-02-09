@@ -96,6 +96,12 @@ class Network:
         self.biases = [b-(alfa/len(mini_batch))*nb 
                        for b, nb in zip(self.biases, nabla_b)]
 
+
+    def train(self,mini_batch,epochs,alfa):
+        for _ in range(epochs):
+            self.update_mini_batch( mini_batch,  alfa)
+
+
     def feedforward(self, x): 
         """[summary]
 

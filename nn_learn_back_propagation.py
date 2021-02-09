@@ -13,7 +13,7 @@ def print_list(l,var_name):
 
 def learn_logical_and():
     net = Network([2, 1],sigmoid , dsigmoid_to_dval)
-    # ok values are -30,20,20
+    # ok values are -30,20,20 , by default it start with random numbers
     net.biases[0][0][0] = -25
     net.weights[0][0][0] = 15
     net.weights[0][0][1] = 15
@@ -28,8 +28,7 @@ def learn_logical_and():
 
     mini_batch = [(x_sample.reshape(x_sample.size,1),y_sample) for x_sample , y_sample in zip(x,y)]
     epochs = 30
-    for j in range(epochs):
-        net.update_mini_batch( mini_batch,  0.001)
+    net.train(mini_batch,epochs,0.01)
 
     for x_sample in x:
         print(f"net.feedforward({x_sample}) : {net.feedforward(x_sample)}")

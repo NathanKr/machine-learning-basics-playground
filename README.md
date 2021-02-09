@@ -146,17 +146,24 @@ python code to do basic machine learning stuff
     </td>
   </tr>
    <tr>
-    <td>nn_learn_back_propagation.py</td>
+    <td>nn_learn_back_propagation_engine.py</td>
     <td>
     <ul>
-    <li> i am solving almost the same neural network as in nn_learn_minimize.py and nn_learn_analytic_back_propagation</li>
-    <li> solution is based on the coursera course by Andreu Ng in particular lecture 9 which starts here<a href="https://www.youtube.com/watch?v=0twSSFZN9Mc">here</a></li>
-    <li>cost function used here (as opposed to the two other solutions) is the same as in logistic regression and i am ignoring regularization</li>
-    <li>activation function used here (as opposed to the two other solutions) is sigmoid</li>
-    <li>features and signals have Andrew Ng notations (as opposed to the two other solutions) </li>
+    <li>this is a class that represent a neural network and is based on <a href="https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/network.py">this code</a> which is based on <a href="http://neuralnetworksanddeeplearning.com/chap2.html">this book</a></li>
+    <li>the Network class is simple but generic - you can define the number of layers and number of neurons per layer</li>
+    <li>back propagation algorithm is used here in the function backprop to compute the derivative of the cost function (nabla) of a sample point (x,y) with respect to the weights and biases and then create the mean over the mini batch. the algorithm is based on 4 equations BP1,BP2,BP3,BP4 which are defined in the book link</li>
+    <li>the function backprop compute also the new weights and biases given the nabla and the learning rate alfa thus doing gradient descent step </li>
+    <li>i have made few changes : 1. activation function and its derivative are parameters of the constructor 2. replace xrange with range because there is no xrange in current python version 3. for simplicity i am not using SGD , instead i am using gradient descent in a new function called train</li>
     </ul>
     </td>
   </tr>
-
-  
+ <tr>
+    <td>nn_learn_back_propagation.py</td>
+    <td>
+    <ul>
+    <li>this file uses nn_learn_back_propagation_engine.py to solve a logical && using a neural network with two layers</li>
+    <li>it is working only if i start around the solution of the features, may be because i have only 4 data set samples , BTW i had the same problem with nn_learn_analytic_back_propagation.py which have 3 data set samples</li>
+    </ul>
+    </td>
+  </tr>
 </table>
