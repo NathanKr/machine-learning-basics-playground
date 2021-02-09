@@ -98,6 +98,21 @@ def cost_function_linear_regression_J(Teta,X,Y,lamda=0):
     
     return J    
 
+def sum_square_residuals(y,h):
+    """compute sum of square residuals
+
+    Args:
+        y ([number]): actual , m x 1
+        h ([number]): hypothesis , m x 1
+
+    Returns:
+        number: sum over all m points (y[i] - h[i])^2 
+    """
+    residual = y - h
+    # this sum (y[i]-h[i])^2 over all items or using vector notation (y-h)^2
+    ssr = np.dot(residual,residual) 
+    return ssr
+
 
 def softplus(val):
     return np.log(1+np.exp(val))

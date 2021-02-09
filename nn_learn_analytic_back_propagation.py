@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from utils import compute_numerical_derivative , softplus , dsoftplus_to_dval , symetric_random , random_normal_distribution , linear_line
+from utils import sum_square_residuals , compute_numerical_derivative , softplus , dsoftplus_to_dval , symetric_random , random_normal_distribution , linear_line
 import sys
 
 # this is based on this https://www.youtube.com/watch?v=IN2XmBhILt4
@@ -80,8 +80,10 @@ class AnalyticBackPropagation:
         #dssr/db3 = (dssr/dh)*(dh/db3)
         residual = self.y-self.h
         # dssr_dh = 2*np.sum(residual)*(-1) # -> no sum because it is done allready on the cost to feature derivatives
-        dssr_dh = 2*residual*(-1)
-        return dssr_dh
+        dssr_dh = 2*residual*(-1) # size is m x 1
+        
+
+        return dssr_dh  # vector size m x 1
 
     # ************ level 2 --> 3 ************ 
     def dh_to_db3(self):    
@@ -183,14 +185,9 @@ class AnalyticBackPropagation:
         # sum over all data set
         return np.sum(obj.dssr_to_dh()*obj.dh_to_dz4()*obj.dz4_to_da2()*obj.da2_to_dz2()*obj.dz2_to_dw2())
 
+    def cost_function(self):
+            return sum_square_residuals(self.y , self.h)
 
-    def sum_square_residuals(self):
-        """This is actually the cost function , J by Andrew Ng
-        """
-        residual = self.y - self.h
-        # this sum (y[i]-h[i])^2 over all items or using vector notation (y-h)^2
-        ssr = np.dot(residual,residual) 
-        return ssr
 
     def plot_signals(self):
         fig, axs = plt.subplots(4, 2)
@@ -276,12 +273,12 @@ class AnalyticBackPropagation:
         
         if(step_condition == True):
             print("step condition is True , current_max_step : {} , MIN_STEP_SIZE : {}".format(self.current_max_step(),self.MIN_STEP_SIZE))
-            print("ssr : {} , current_num_iterations : {} , MAX_ITERATIONS : {}".format(self.sum_square_residuals(),self.current_num_iterations,self.MAX_ITERATIONS))
+            print("cost -> ssr : {} , current_num_iterations : {} , MAX_ITERATIONS : {}".format(self.cost_function(),self.current_num_iterations,self.MAX_ITERATIONS))
 
         iterations_condition = self.current_num_iterations > self.MAX_ITERATIONS
         if(iterations_condition == True):
             print("num iteration condition is True , current_num_iterations : {} , MAX_ITERATIONS : {}".format(self.current_num_iterations,self.MAX_ITERATIONS))
-            print("ssr : {} , current_max_step : {} , MIN_STEP_SIZE : {}".format(self.sum_square_residuals(),self.current_max_step(),self.MIN_STEP_SIZE))
+            print("cost -> ssr : {} , current_max_step : {} , MIN_STEP_SIZE : {}".format(self.cost_function(),self.current_max_step(),self.MIN_STEP_SIZE))
 
         
         return step_condition or iterations_condition
@@ -325,8 +322,8 @@ class AnalyticBackPropagation:
         while(self.gradient_descent_algorithm_is_finish() == False):
             self.compute_new_features_value_given_step_per_feature()
             self.update_new_signals_using_forward_propagation()
-            ssr = self.sum_square_residuals()
-            print("ssr : {} , iteration : {} , current_max_step : {}".format(ssr , self.current_num_iterations, self.current_max_step()))
+            ssr = self.cost_function()
+            print("cost -> ssr : {} , iteration : {} , current_max_step : {}".format(ssr , self.current_num_iterations, self.current_max_step()))
             ssr_vec.append(ssr)
             self.print_features()
             self.current_num_iterations += 1
@@ -355,11 +352,11 @@ class AnalyticBackPropagation:
             feature_name = self.feature_names[i]
             self.__dict__[feature_name] += self.NUMERICAL_DERIVATIVE_EPS
             self.update_new_signals_using_forward_propagation()
-            func_value_plus_eps = self.sum_square_residuals()
+            func_value_plus_eps = self.cost_function()
 
             self.__dict__[feature_name] -= 2*self.NUMERICAL_DERIVATIVE_EPS
             self.update_new_signals_using_forward_propagation()
-            func_value_minus_eps = self.sum_square_residuals()
+            func_value_minus_eps = self.cost_function()
 
             numerical_derivative = self.compute_numerical_derivative_self(func_value_plus_eps,func_value_minus_eps)
             print("feature : {} , score : {}  , 100 marks excact analytic derivative as numeric".format(feature_name,100*abs(analytic_derivative()/numerical_derivative)))

@@ -1,5 +1,5 @@
 import numpy as np
-from utils import sigmoid  , cost_function_logistic_regression_J , compute_numerical_derivative
+from utils import sigmoid   , compute_numerical_derivative , sum_square_residuals
 
 
 class BackPropagation:
@@ -24,7 +24,7 @@ class BackPropagation:
         # level 1 -> level 2
         self.Teta1_sample = None # 2 x 2
         self.dcost_to_dteta1_sample = np.empty((2,2)) # 2 x 2
-        self.dcost_to_dteta1 = np.empty((2,2)) # 2 x 2
+        self.dcost_to_dteta1_mean = None # 2 x 2 , sum dcost_to_dteta1_sample / number of samples
         
         # level 2
         self.z2_sample = None # 2 x 1
@@ -34,7 +34,7 @@ class BackPropagation:
         # level 2 -> level 3
         self.Teta2_sample = None # 3 x 1
         self.dcost_to_dteta2_sample = None # 3 x 1
-        self.dcost_to_dteta2 = None # 3 x 1
+        self.dcost_to_dteta2_mean = None # 3 x 1 ,  sum dcost_to_dteta2_sample / number of samples
 
         # level 3
         self.a3_sample = None # scalar
@@ -58,9 +58,9 @@ class BackPropagation:
         # layer 1 -> layer 2
         self.z2_sample = np.matmul(self.Teta1_sample , self.a1_sample)
 
-        # self.a2_sample[0] is 1 anyway - bias
         sig_z2 = sigmoid(self.z2_sample)
         # todo nath -> use compact
+        # self.a2_sample[0] is 1 anyway - bias
         self.a2_sample[1] = sig_z2[0]
         self.a2_sample[2] = sig_z2[1]
         
@@ -106,6 +106,7 @@ class BackPropagation:
         # self.dcost_to_dteta2_sample = np.matmul( self.delta3_sample , self.a2_sample.T)
         self.dcost_to_dteta2_sample =  self.delta3_sample * self.a2_sample
 
+
     def compute_dcost_to_dteta_sample(self):
         self.forward_propagation_sample()
         self.backward_propagation_sample()
@@ -113,51 +114,52 @@ class BackPropagation:
         self.compute_dcost_to_dteta1_sample()
 
 
+    # def cost_function(self):
+    #     """[summary]
+    #     same cost as in StatsQuest
 
-    def compute_cost_sample(self,Teta,X,Y):
-        # Teta = self.get_Teta_sample()
-        # Y = self.y_sample
-        # ## todo nath , replace with symetric_random 
-        # X = np.random.rand(self.n) 
-        return cost_function_logistic_regression_J(Teta,X,Y)
+    #     Returns:
+    #         number : sum of square reidual
+    #     """
+    #     return sum_square_residuals(self.y , self.h)
 
-    def compute_cost_numerical_derivative_sample_per_feature(self,i_feature):
-        """[summary]
+    # def compute_cost_numerical_derivative_mean_per_feature(self,i_feature):
+    #     """[summary]
 
-        Args:
-            i_feature (integer): index of the feature in Teta_sample 0-6
+    #     Args:
+    #         i_feature (integer): index of the feature in Teta_sample 0-6
 
-        Returns:
-            [type]: [description]
-        """
+    #     Returns:
+    #         [type]: [description]
+    #     """
 
-        Y = self.y_sample
-        # ## todo nath , replace with symetric_random 
-        X = np.random.rand(self.n) 
+    #     Y = self.y_sample
+    #     # ## todo nath , replace with symetric_random 
+    #     # fix the code ---> X = np.random.rand(self.n) .........................
 
-        # save teta state
-        saved_Teta1_sample = self.Teta1_sample.copy()
-        saved_Teta2_sample = self.Teta2_sample.copy()
+    #     # save teta state
+    #     saved_Teta1_sample = self.Teta1_sample.copy()
+    #     saved_Teta2_sample = self.Teta2_sample.copy()
 
-        eps = self.NUMERICAL_DERIVATIVE_EPS
-        Teta_features_sample = np.copy(self.get_Teta_sample())
+    #     eps = self.NUMERICAL_DERIVATIVE_EPS
+    #     Teta_features_sample = np.copy(self.get_Teta_sample())
 
-        # add eps
-        Teta_features_sample[i_feature] += eps
-        self.forward_propagation_sample()
-        cost_plus_feature_eps = self.compute_cost_sample(Teta_features_sample,X,Y)
+    #     # add eps
+    #     Teta_features_sample[i_feature] += eps
+    #     self.forward_propagation_sample()
+    #     cost_plus_feature_eps = self.compute_cost_sample(Teta_features_sample,X,Y)
 
-        # subtract eps
-        Teta_features_sample[i_feature] -= 2*eps
-        self.forward_propagation_sample()
-        cost_minus_feature_eps = self.compute_cost_sample(Teta_features_sample,X,Y)
+    #     # subtract eps
+    #     Teta_features_sample[i_feature] -= 2*eps
+    #     self.forward_propagation_sample()
+    #     cost_minus_feature_eps = self.compute_cost_sample(Teta_features_sample,X,Y)
 
-        # restore teta state
-        self.Teta1_sample = saved_Teta1_sample
-        self.Teta2_sample = saved_Teta2_sample
-        self.forward_propagation_sample()
+    #     # restore teta state
+    #     self.Teta1_sample = saved_Teta1_sample
+    #     self.Teta2_sample = saved_Teta2_sample
+    #     self.forward_propagation_sample()
 
-        return  compute_numerical_derivative(cost_plus_feature_eps,cost_minus_feature_eps,eps)
+    #     return  compute_numerical_derivative(cost_plus_feature_eps,cost_minus_feature_eps,eps)
 
     def get_Teta_sample(self):
         """[summary]
@@ -170,32 +172,49 @@ class BackPropagation:
 
         return np.concatenate((teta1_sample_flat , teta2_sample_flat))
 
-    def compute_numeric_dcost_to_dteta_sample(self):
-        i_feature = 0
-        while i_feature < self.n: # loop over features
-            dcost_to_dfeature = self.compute_cost_numerical_derivative_sample_per_feature(i_feature)
-            self.numeric_dcost_to_dteta_sample[i_feature] = dcost_to_dfeature
-            i_feature += 1
+    # def compute_numeric_dcost_to_dteta_mean(self):
+    #     i_feature = 0
+    #     while i_feature < self.n: # loop over features
+    #         dcost_to_dfeature = self.compute_cost_numerical_derivative_mean_per_feature(i_feature)
+    #         self.numeric_dcost_to_dteta_sample[i_feature] = dcost_to_dfeature
+    #         i_feature += 1
 
     def compute_cost_derivative_and_check(self):
+        # initialize
+        self.dcost_to_dteta1_mean = np.zeros((2,2))
+        self.dcost_to_dteta2_mean = np.zeros(3)
+        
+        # loop sample to compute derivates per sample using back propagation and sum
         i_sample = 0
-        obj.dcost_to_dteta1 = ...........
         while i_sample < obj.m: # loop over data set samples
             # use rand because i want simply to check derivative
             Teta1_sample = np.random.rand(2,2)
             Teta2_sample = np.random.rand(1,3)
             obj.set_sample(i_sample,Teta1_sample,Teta2_sample)
             obj.compute_dcost_to_dteta_sample() 
-            obj.compute_numeric_dcost_to_dteta_sample()
-            obj.compare_derivatives_sample()
+            # accumelate samples
+            self.dcost_to_dteta1_mean += self.dcost_to_dteta1_sample
+            self.dcost_to_dteta2_mean += self.dcost_to_dteta2_sample
             i_sample += 1
 
-    def compare_derivatives_sample(self):
-        dcost_to_dteta1_sample_flat = self.dcost_to_dteta1_sample.reshape(-1)
-        dcost_to_dteta_sample_flat =  np.concatenate((dcost_to_dteta1_sample_flat , self.dcost_to_dteta2_sample))
+        # compute the mean 
+        self.dcost_to_dteta1_mean /= self.m
+        self.dcost_to_dteta2_mean /= self.m
 
-        result_percent = 100 * self.numeric_dcost_to_dteta_sample / dcost_to_dteta_sample_flat
-        print(f"delta rule vs numeric dcost / dteta  (100 is perfect match): {result_percent}")
+
+        # compute numerical derivatibe
+        # todo nath obj.compute_numeric_dcost_to_dteta_mean()
+
+        # compare
+        # todo nath obj.compare_derivatives_mean()
+
+
+    # todo nath  def compare_derivatives_sample(self):
+    #     dcost_to_dteta1_sample_flat = self.dcost_to_dteta1_sample.reshape(-1)
+    #     dcost_to_dteta_sample_flat =  np.concatenate((dcost_to_dteta1_sample_flat , self.dcost_to_dteta2_sample))
+
+    #     result_percent = 100 * self.numeric_dcost_to_dteta_sample / dcost_to_dteta_sample_flat
+    #     print(f"delta rule vs numeric dcost / dteta  (100 is perfect match): {result_percent}")
 
 # main
 obj = BackPropagation()

@@ -1,5 +1,5 @@
 import numpy as np
-from utils import softplus , random_normal_distribution , linear_line
+from utils import sum_square_residuals , softplus , random_normal_distribution , linear_line
 from scipy import optimize
 import numpy as np
 
@@ -29,20 +29,19 @@ def forward_propagation(Teta):
     return h
 
 
-def sum_square_residuals(Teta):
+def sum_square_residuals_with_Teta(Teta):
     """This is actually the cost function , J by Andrew Ng
     """
     h = forward_propagation(Teta)
-    residual = y - h
-    # this sum (y[i]-h[i])^2 over all items or using vector notation (y-h)^2
-    ssr = np.dot(residual,residual) 
-    return ssr
+    return sum_square_residuals(y,h)
 
-
+def cost_function(Teta):
+    return sum_square_residuals_with_Teta(Teta)
 
 #res = optimize.minimize(sum_square_residuals, x0=[0,0,0,1,2,3,4]) --> this is not going to find the global minima
-# the following will give almost zero ssr for most runs but not all
-res = optimize.minimize(sum_square_residuals, x0=[0,0,0,random_normal_distribution(),random_normal_distribution(),random_normal_distribution(),random_normal_distribution()])
+# the following will give almost zero ssr for most runs but not all 
+# the letter x represent the features for optimize.minimize
+res = optimize.minimize(cost_function, x0=[0,0,0,random_normal_distribution(),random_normal_distribution(),random_normal_distribution(),random_normal_distribution()])
 print("res : ",res)    
-print("ssr : ",sum_square_residuals(res.x))
+print("ssr : ",cost_function(res.x))
 print("h : ",forward_propagation(res.x))
