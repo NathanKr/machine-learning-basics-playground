@@ -126,6 +126,7 @@ python code to do basic machine learning stuff
     <li>using the chain rule evaluates the derivative from the right (cost function) to left thus back-propagating</li>
     <li>the derivatives are checked via the numeric derivative in debug_check_analytical_derivative()</li>
     <li>taking initial values suggested by StatsQuest and AndrewNg the algorithm is converging but not to the global minima - ssr ~0.7 so result are not good but the learning code is working</li>
+    <li>The same neural network is solved using optimise.minimize in nn_learn_minimize.py</li>
     <li>taking initial values around the solution of minimize - check neural_network_learn_minimize is working even when we add eps of 4</li>
     <li>TODO : understand how to get initial values that will cause convergence to the global minima ssr ~ 0</li>
     <li>the cost function used here is ssr</li>
@@ -164,6 +165,7 @@ python code to do basic machine learning stuff
     <ul>
     <li>this file uses nn_learn_back_propagation_engine.py via learn_logical_and() to solve a logical && using a neural network with two layers</li>
     <li>learn_logical_and() is working only if I start around the solution of the features, maybe because I have only 4 data set samples, BTW I had the same problem with nn_learn_analytic_back_propagation.py which have 3 data set samples</li>
+    <li>The same neural network is solved using optimise.minimize in neuron_logic_and_gate.py</li>
     <li>I have implemented learn_StatsQuest() but it will NOT match StatsQuest as nn_learn_minimize.py and nn_learn_analytic_back_propagation.py because StatasQuest neuron network has activation function on layer 3 which is linear, and activation function on layer 2 is softplus . However , currently Network class has the same activation function for every neuron. It is not difficult to support activation per nuron but currently it is not supported</li>
     </ul>
     </td>
