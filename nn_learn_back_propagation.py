@@ -1,5 +1,5 @@
 from nn_learn_back_propagation_engine import Network
-from utils import sigmoid , dsigmoid_to_dval , softplus , dsoftplus_to_dval
+from utils import sigmoid , dsigmoid_to_dval , softplus , dsoftplus_to_dval 
 import numpy as np
 
 
@@ -39,7 +39,6 @@ def learn_StatsQuest():
     # while the activation on layer 2 is softplus . 
     # However , currently Network class has the same activation for every layer. 
     # it is not difficult to support activation per nuron but currently it is not supported
-    
     net = Network([1 , 2, 1],softplus , dsoftplus_to_dval)
 
     # layer 1 -> layer 2
@@ -70,4 +69,4 @@ def learn_StatsQuest():
 
 # main
 learn_logical_and()    
-# learn_StatsQuest()
+#learn_StatsQuest()
