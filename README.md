@@ -162,8 +162,9 @@ python code to do basic machine learning stuff
     <td>nn_learn_back_propagation.py</td>
     <td>
     <ul>
-    <li>this file uses nn_learn_back_propagation_engine.py to solve a logical && using a neural network with two layers</li>
-    <li>it is working only if I start around the solution of the features, maybe because I have only 4 data set samples, BTW I had the same problem with nn_learn_analytic_back_propagation.py which have 3 data set samples</li>
+    <li>this file uses nn_learn_back_propagation_engine.py via learn_logical_and() to solve a logical && using a neural network with two layers</li>
+    <li>learn_logical_and() is working only if I start around the solution of the features, maybe because I have only 4 data set samples, BTW I had the same problem with nn_learn_analytic_back_propagation.py which have 3 data set samples</li>
+    <li>I have implemented learn_StatsQuest() but it will NOT match StatsQuest as nn_learn_minimize.py and nn_learn_analytic_back_propagation.py because StatasQuest neuron network has activation function on layer 3 which is linear, and activation function on layer 2 is softplus . However , currently Network class has the same activation function for every neuron. It is not difficult to support activation per nuron but currently it is not supported</li>
     </ul>
     </td>
   </tr>
