@@ -55,7 +55,7 @@ def p_x_vec(_x1,_x2):
 
 
 def plot_probabilities():
-    fig, axs = plt.subplots(2)
+    _ , axs = plt.subplots(2)
     axs[0].plot(x1,p_x1_vec(x1),'.')
     axs[0].set_title('p(x1) -> check that its normal distributed')
     axs[1].plot(x2,p_x2_vec(x2),'.')

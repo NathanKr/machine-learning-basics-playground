@@ -65,7 +65,7 @@ class Network:
 
         return (nabla_b, nabla_w)
 
-
+   
     def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives of C_x with respect to
            the output activations.
@@ -111,10 +111,27 @@ class Network:
         Returns:
             [number]: output of the network - this is actualy h sample
         """
-        a = x # set the first layer
-        
+
+        if x.ndim > 1:
+            a = x # set the first layer
+        else:
+            # dim is 1
+            a = x.reshape(x.size,1)
+
         for b, w in zip(self.biases, self.weights):
             a = self.activation_function(np.dot(w, a)+b)
         
         h = a
         return h # hypothesis ,output
+
+    def print_list(self,l,var_name):
+        i=0
+        while i < len(l):
+            print(f"{var_name}[{i}].shape : {l[i].shape}")
+            i += 1
+        print(f"{var_name}\n{l}")        
+
+    def print_shapes(self):
+        self.print_list(self.biases,"biases")
+        self.print_list(self.weights,"weights")
+            

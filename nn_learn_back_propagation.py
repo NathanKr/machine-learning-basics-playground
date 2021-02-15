@@ -3,13 +3,6 @@ from utils import sigmoid , dsigmoid_to_dval , softplus , dsoftplus_to_dval
 import numpy as np
 
 
-def print_list(l,var_name):
-    i=0
-    while i < len(l):
-        print(f"{var_name}[{i}].shape : {l[i].shape}")
-        i += 1
-    print(f"{var_name}\n{l}")
-
 
 def learn_logical_and():
     net = Network([2, 1],sigmoid , dsigmoid_to_dval)
@@ -18,8 +11,7 @@ def learn_logical_and():
     net.weights[0][0][0] = 15 # exact value is 20
     net.weights[0][0][1] = 15 # exact value is 20
 
-    print_list(net.biases,"biases")
-    print_list(net.weights,"weights")
+    net.print_shapes()
 
     x1 = np.array([1 , 0 , 0 , 1])
     x2 = np.array([1 , 0 , 1 , 0])
@@ -53,9 +45,8 @@ def learn_StatsQuest():
     net.weights[1][0][0] = 5.72510687 # StatsQuest w3 , exact is 5.72510687
     net.weights[1][0][1] = -0.88626893 # StatsQuest w4 , exact is -0.88626893
 
-    print_list(net.biases,"biases")
-    print_list(net.weights,"weights")
-
+    net.print_shapes()
+    
     x = np.array([0 , 0.5  , 1])
     y =  np.array([0 , 1 , 0]) 
 
