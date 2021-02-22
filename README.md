@@ -59,6 +59,7 @@ python code to do basic machine learning stuff
     <ul>
     <li>use optimize.minimize to solve logistics regression. the dataset is from Andrew Ng machine learning course @ Coursera</li>
     <li>feature scaling is a must</li>
+    <li>plot the resulted decision boundary</li>
     </ul>
     </td>
   </tr>

@@ -47,7 +47,7 @@ ar_index_fail = np.where(Y == 0)
 
 x2_0_5_line = -(Teta[0]+Teta[1]*X1)/Teta[2] # prob 0.5
 
-plt.title('+ : pass , o : fail \ncomputed gradient descent 0.5 logistic regression probability line')
+plt.title('+ : pass , o : fail \ncomputed gradient descent 0.5 logistic regression decision boundary')
 plt.xlabel("grade1")
 plt.ylabel("grade2")
 plt.plot(scale_factor*X1[ar_index_pass],scale_factor*X2[ar_index_pass],'+')
