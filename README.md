@@ -1,5 +1,8 @@
 <h2>Motivation</h2>
-python code to do basic machine learning stuff
+<ul>
+<li>python code to do basic machine learning stuff</li>
+<li>it is important to feel the machine learning algorithm by doing them yourself, thus most here are implemented by me without using machine learning libraries like scikit-learn or pytorch</li>
+</ul>
 
 <table>
   <tr>
